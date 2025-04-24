@@ -1,0 +1,448 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fábrica Vita Gula</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #1a1a1a;
+      color: #f0f0f0;
+      flex-direction: column;
+    }
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      background-color: #2c2c2c;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+      border-radius: 15px;
+      overflow: hidden;
+      margin: 20px 0;
+      position: relative;
+    }
+    .header {
+      background-color: #1e90ff;
+      color: #ffffff;
+      padding: 30px;
+      text-align: center;
+      position: relative;
+      border-bottom: 5px solid #ff6f61;
+    }
+    .header h1 {
+      margin: 0;
+      font-size: 2.5em;
+      font-weight: 600;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+    .header p {
+      margin: 5px 0 0;
+      font-size: 1.2em;
+      font-weight: 400;
+    }
+    .main-content {
+      padding: 30px;
+      text-align: center;
+    }
+    .main-content h2 {
+      color: #ff6f61;
+      font-size: 2em;
+    }
+    .main-content p {
+      font-size: 1.1em;
+    }
+    .tabs {
+      display: flex;
+      background-color: #3a3a3a;
+      border-bottom: 1px solid #555;
+    }
+    .tab {
+      flex: 1;
+      padding: 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      color: #f0f0f0;
+      font-weight: 600;
+    }
+    .tab:hover, .tab.active {
+      background-color: #ff6f61;
+      color: #ffffff;
+    }
+    .tab-content {
+      display: none;
+      padding: 30px;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      justify-items: center;
+    }
+    .product-item {
+      width: 180px;
+      height: 180px;
+      background-color: #2e7d32;
+      border-radius: 10px;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .product-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .audio-controls {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      color: #ffffff;
+      font-size: 1em;
+      font-weight: 600;
+    }
+    .audio-controls span {
+      margin-right: 10px;
+    }
+    .audio-controls img {
+      width: 30px;
+      height: 30px;
+      margin: 0 5px;
+      cursor: pointer;
+      filter: invert(1);
+    }
+    .dropdown {
+      position: relative;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #3a3a3a;
+      min-width: 160px;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
+      z-index: 1;
+      top: 100%;
+      left: 0;
+      border-radius: 5px;
+    }
+    .dropdown-content div {
+      padding: 12px 16px;
+      text-align: left;
+      cursor: pointer;
+      color: #f0f0f0;
+      transition: background-color 0.3s ease;
+    }
+    .dropdown-content div:hover {
+      background-color: #ff6f61;
+      color: #ffffff;
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+    .tab-content h2 {
+      color: #ff6f61;
+      font-size: 1.8em;
+    }
+    .tab-content p {
+      font-size: 1.1em;
+      line-height: 1.6;
+    }
+    .tab-content a {
+      color: #ff6f61;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .tab-content a:hover {
+      color: #ffffff;
+    }
+    @media (max-width: 768px) {
+      .tabs {
+        flex-direction: column;
+      }
+      .tab {
+        width: 100%;
+        border-bottom: 1px solid #555;
+      }
+      .dropdown-content {
+        position: static;
+        width: 100%;
+      }
+      .header h1 {
+        font-size: 1.8em;
+      }
+      .header p {
+        font-size: 1em;
+      }
+      .audio-controls img {
+        width: 25px;
+        height: 25px;
+      }
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Fábrica Vita Gula</h1>
+      <p>Sabor, Tradição e Qualidade Desde 2001</p>
+      <div class="audio-controls">
+        <span>Som</span>
+        <img id="prev-btn" src="https://img.icons8.com/ios-filled/50/ffffff/rewind.png" alt="Previous" onclick="playPrevious()">
+        <img id="play-pause-btn" src="https://img.icons8.com/ios-filled/50/ffffff/pause.png" alt="Pause" onclick="togglePlayPause()">
+        <img id="next-btn" src="https://img.icons8.com/ios-filled/50/ffffff/fast-forward.png" alt="Next" onclick="playNext()">
+        <img id="volume-icon" src="https://img.icons8.com/ios-filled/50/ffffff/volume-high.png" alt="Volume" onclick="changeVolume()">
+      </div>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="openTab('main')">Página Principal</div>
+      <div class="tab" onclick="openTab('quem-somos')">Quem Somos</div>
+      <div class="tab dropdown" onclick="openTab('produtos')">
+        Produtos
+        <div class="dropdown-content">
+          <div onclick="openTab('paes'); event.stopPropagation();">Pães</div>
+          <div onclick="openTab('biscoitos'); event.stopPropagation();">Biscoitos</div>
+          <div onclick="openTab('bolos'); event.stopPropagation();">Bolos</div>
+        </div>
+      </div>
+      <div class="tab" onclick="openTab('contatos')">Contatos</div>
+      <div class="tab" onclick="openTab('downloads')">Downloads</div>
+      <div class="tab" onclick="openTab('parcerias')">Parcerias</div>
+    </div>
+    <div id="main" class="tab-content active">
+      <div class="main-content">
+        <h2>Bem-vindo à Vita Gula!</h2>
+        <p>Descubra o sabor que transforma momentos simples em inesquecíveis.</p>
+      </div>
+    </div>
+    <div id="quem-somos" class="tab-content">
+      <h2>🌟 Fábrica Vita Gula - Sabor, Tradição e Qualidade Desde 2001</h2>
+      <p>Na Vita Gula, acreditamos que cada pedaço de pão e biscoito carrega uma história, uma memória e um momento especial. Desde 2001, buscamos unir tradição e inovação, criando produtos que trazem aconchego e sabor para a vida das pessoas.</p>
+      <h3>💡 Nossa Essência</h3>
+      <p>Somos uma fábrica dedicada à excelência gastronômica, comprometida com ingredientes cuidadosamente selecionados e processos que garantem qualidade e sabor incomparáveis.</p>
+      <h3>🔑 Nossos Valores</h3>
+      <ul>
+        <li>✅ Qualidade em cada detalhe – Dos ingredientes ao processo de fabricação, prezamos pela excelência.</li>
+        <li>✅ Respeito e Sustentabilidade – Valorizamos nossos fornecedores, colaboradores e o impacto ambiental.</li>
+        <li>✅ Inovação e Tradição – Combinamos receitas clássicas com técnicas modernas para criar sabores únicos.</li>
+      </ul>
+      <h3>🤝 Nosso Compromisso</h3>
+      <ul>
+        <li>🍪 Produtos autênticos e saborosos – Feitos com carinho para transformar cada refeição em um momento especial.</li>
+        <li>🚀 Expansão e excelência – Trabalhamos para levar nossos produtos a mais lares e fortalecer nossa presença no mercado.</li>
+        <li>👨‍👩‍👧 Famílias e laços – Queremos estar presentes em cada encontro, cada café da manhã e cada celebração.</li>
+      </ul>
+      <p>Seja bem-vindo à Vita Gula, onde o sabor encontra o coração e transforma momentos simples em inesquecíveis!</p>
+    </div>
+    <div id="produtos" class="tab-content">
+      <h2>Produtos</h2>
+      <p>Explore nossa variedade de produtos deliciosos e artesanais:</p>
+      <ul>
+        <li><a href="#" onclick="openTab('paes'); return false;">Pães</a> - Frescos e saborosos, perfeitos para o seu dia a dia.</li>
+        <li><a href="#" onclick="openTab('biscoitos'); return false;">Biscoitos</a> - Delicie-se com nossos biscoitos artesanais.</li>
+        <li><a href="#" onclick="openTab('bolos'); return false;">Bolos</a> - Irresistíveis para todas as ocasiões.</li>
+      </ul>
+    </div>
+    <div id="paes" class="tab-content">
+      <h2>Pães</h2>
+      <div class="product-grid">
+        <div class="product-item">
+          <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/paes1.jpg" alt="Pão 1">
+        </div>
+        <div class="product-item">
+          <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/paes2.jpg" alt="Pão 2">
+        </div>
+        <div class="product-item">
+          <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/paes3.jpg" alt="Pão 3">
+        </div>
+        <div class="product-item">
+          <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/paes4.jpg" alt="Pão 4">
+        </div>
+      </div>
+    </div>
+    <div id="biscoitos" class="tab-content">
+      <h2>Biscoitos</h2>
+      <div class="product-grid">
+        <div class="product-item">
+          <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/biscoitos_img/biscoitos1.jpg" alt="Biscoito 1">
+        </div>
+        <div class="product-item">
+          <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/biscoitos_img/biscoitos2.jpg" alt="Biscoito 2">
+        </div>
+        <div class="product-item">
+          <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/biscoitos_img/biscoitos3.jpg" alt="Biscoito 3">
+        </div>
+        <div class="product-item">
+          <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/biscoitos_img/biscoitos4.jpg" alt="Biscoito 4">
+        </div>
+      </div>
+    </div>
+    <div id="bolos" class="tab-content">
+      <h2>Bolos</h2>
+      <div class="product-grid">
+        <div class="product-item">
+          <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/bolos_img/bolos1.jpg" alt="Bolo 1">
+        </div>
+        <div class="product-item">
+          <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/bolos_img/bolos2.jpg" alt="Bolo 2">
+        </div>
+        <div class="product-item">
+          <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/bolos_img/bolos3.jpg" alt="Bolo 3">
+        </div>
+        <div class="product-item">
+          <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/bolos_img/bolos4.jpg" alt="Bolo 4">
+        </div>
+      </div>
+    </div>
+    <div id="contatos" class="tab-content">
+      <h2>Contatos</h2>
+      <p>Entre em contato conosco para mais informações:</p>
+      <p><a href="mailto:vitagula@hotmail.com">vitagula@hotmail.com</a></p>
+      <p><a href="https://wa.me/+5588988585090">88 98858-5090</a></p>
+    </div>
+    <div id="downloads" class="tab-content">
+      <h2>Downloads</h2>
+      <p>Baixe nossos catálogos e materiais promocionais aqui.</p>
+    </div>
+    <div id="parcerias" class="tab-content">
+      <h2>Parcerias</h2>
+      <p>Interessado em ser um parceiro da Vita Gula? Entre em contato conosco!</p>
+    </div>
+  </div>
+
+  <audio id="background-audio" loop autoplay>
+    <source src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/umhitnolar.mp3" type="audio/mpeg">
+    Seu navegador não suporta o elemento de áudio.
+  </audio>
+
+  <script>
+    let volumeLevel = 2; // 0: low, 1: medium, 2: high
+    const audio = document.getElementById('background-audio');
+    let isPlaying = true;
+    const tracks = [
+      "https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/umhitnolar.mp3",
+      // Add more tracks here if available
+    ];
+    let currentTrackIndex = 0;
+
+    // Ensure audio plays on page load
+    audio.play().catch(function(error) {
+      console.log("Audio playback failed:", error);
+    });
+
+    function changeVolume() {
+      volumeLevel = (volumeLevel + 1) % 3;
+      const volumeIcon = document.getElementById('volume-icon');
+      if (volumeLevel === 0) {
+        volumeIcon.src = 'https://img.icons8.com/ios-filled/50/ffffff/low-volume.png';
+        audio.volume = 0.3; // Low volume
+      } else if (volumeLevel === 1) {
+        volumeIcon.src = 'https://img.icons8.com/ios-filled/50/ffffff/medium-volume.png';
+        audio.volume = 0.6; // Medium volume
+      } else {
+        volumeIcon.src = 'https://img.icons8.com/ios-filled/50/ffffff/volume-high.png';
+        audio.volume = 1.0; // High volume
+      }
+    }
+
+    function togglePlayPause() {
+      const playPauseBtn = document.getElementById('play-pause-btn');
+      if (isPlaying) {
+        audio.pause();
+        playPauseBtn.src = 'https://img.icons8.com/ios-filled/50/ffffff/play.png';
+        playPauseBtn.alt = 'Play';
+      } else {
+        audio.play();
+        playPauseBtn.src = 'https://img.icons8.com/ios-filled/50/ffffff/pause.png';
+        playPauseBtn.alt = 'Pause';
+      }
+      isPlaying = !isPlaying;
+    }
+
+    function playPrevious() {
+      currentTrackIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+      audio.src = tracks[currentTrackIndex];
+      if (isPlaying) {
+        audio.play();
+      }
+    }
+
+    function playNext() {
+      currentTrackIndex = (currentTrackIndex + 1) % tracks.length;
+      audio.src = tracks[currentTrackIndex];
+      if (isPlaying) {
+        audio.play();
+      }
+    }
+
+    function openTab(tabName) {
+      const tabs = document.getElementsByClassName('tab');
+      const contents = document.getElementsByClassName('tab-content');
+      for (let i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove('active');
+        contents[i].classList.remove('active');
+      }
+      document.getElementById(tabName).classList.add('active');
+      document.querySelector(`.tab[onclick="openTab('${tabName}')"]`)?.classList.add('active');
+    }
+
+    // Set initial volume icon and level
+    document.getElementById('volume-icon').src = 'https://img.icons8.com/ios-filled/50/ffffff/volume-high.png';
+    audio.volume = 1.0; // Start at high volume
+  </script>
+</body>
+</html>
