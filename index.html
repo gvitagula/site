@@ -43,7 +43,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fábrica Vita Gula</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Orbitron:wght@400&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -68,6 +68,8 @@
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      box-sizing: border-box;
+      padding-top: 60px; /* Espaço para o menu fixo */
     }
     .header {
       background-color: #1e90ff;
@@ -95,9 +97,11 @@
       justify-content: center;
       flex-wrap: wrap;
       gap: 8px;
-      position: sticky;
+      position: fixed; /* Menu fixo no topo */
       top: 0;
+      width: 100%;
       z-index: 1000;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     }
     .nav-item {
       padding: 8px 12px;
@@ -173,6 +177,7 @@
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
       flex: 1;
       overflow-y: auto;
+      box-sizing: border-box;
     }
     .tab-content.active {
       display: block;
@@ -185,54 +190,78 @@
     }
     .tab-content h3 {
       font-size: 1.2em;
-      margin: 15px 0 8px;
+      margin: 20px 0 10px;
     }
     .tab-content p, .tab-content ul {
       font-size: 0.9em;
       line-height: 1.5;
       text-align: center;
     }
-    .subtabs {
+    .subtabs, .sub-subtabs {
       display: flex;
       justify-content: center;
       gap: 8px;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
     }
-    .subtab {
+    .subtab, .sub-subtab {
       padding: 8px 12px;
       background-color: #ff6f61;
       color: #ffffff;
       border-radius: 5px;
       cursor: pointer;
       font-weight: 600;
-      transition: background-color 0.3s ease;
+      transition: all 0.3s ease;
       font-size: 0.9em;
     }
-    .subtab:hover {
+    .subtab:hover, .sub-subtab:hover {
+      background-color: #ffffff;
+      color: #ff6f61;
+      transform: translateY(-2px);
+    }
+    .subtab.active, .sub-subtab.active {
       background-color: #ffffff;
       color: #ff6f61;
     }
-    .subtab.active {
-      background-color: #ffffff;
-      color: #ff6f61;
-    }
-    .subtab-content {
+    .subtab-content, .sub-subtab-content {
       display: none;
+      opacity: 0;
+      transition: opacity 0.5s ease, transform 0.5s ease;
+      transform: translateY(10px);
     }
-    .subtab-content.active {
+    .subtab-content.active, .sub-subtab-content.active {
       display: block;
+      opacity: 1;
+      transform: translateY(0);
     }
-    .subtab-content h2 {
+    .subtab-content h2, .sub-subtab-content h2 {
       color: #ff6f61;
       font-size: 1.5em;
       text-align: center;
       margin-top: 0;
     }
-    .subtab-content p {
+    .subtab-content h3, .sub-subtab-content h3 {
+      color: #ff6f61;
+      font-size: 1.2em;
+      text-align: center;
+      margin: 15px 0;
+    }
+    .subtab-content p, .sub-subtab-content p {
       font-size: 0.9em;
       line-height: 1.5;
       text-align: center;
+    }
+    .sub-subtab-content.maintenance {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 255, 204, 0.1);
+      padding: 20px;
+      border-radius: 8px;
     }
     .product-grid {
       display: flex;
@@ -371,22 +400,148 @@
       0%, 100% { height: 20%; }
       50% { height: 80%; }
     }
+    .contact-list, .download-list {
+      list-style: none;
+      padding: 0;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+    .contact-item, .download-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 15px;
+      margin: 8px 0;
+      background-color: #252525;
+      border: 1px solid #00ffcc;
+      border-radius: 8px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .contact-item:hover, .download-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 8px #00ffcc;
+    }
+    .contact-item svg, .download-item svg {
+      width: 24px;
+      height: 24px;
+      margin-right: 12px;
+      fill: #ffffff;
+      transition: fill 0.2s ease;
+    }
+    .contact-item:hover svg, .download-item:hover svg {
+      fill: #00ffcc;
+    }
+    .contact-item a, .download-item a {
+      color: #00ffcc;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+    .contact-item a:hover, .download-item a:hover {
+      color: #ffffff;
+    }
+    .visitor-counter {
+      text-align: center;
+      padding: 15px;
+      background-color: #252525;
+      border: 1px solid #00ffcc;
+      border-radius: 8px;
+      margin: 20px auto;
+      max-width: 300px;
+      font-family: 'Orbitron', sans-serif;
+      color: #00ffcc;
+      box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+    }
+    .visitor-counter span {
+      font-size: 1.2em;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { opacity: 1; }
+      50% { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+    .partner-logo {
+      display: block;
+      width: 200px;
+      height: auto;
+      border: 2px solid #00ffcc;
+      border-radius: 10px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .partner-logo:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px #00ffcc;
+    }
+    .partners-grid {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin: 20px auto;
+      max-width: 800px;
+    }
+    .maintenance-gif {
+      display: block;
+      width: 180px;
+      height: 180px;
+      margin: 20px auto;
+      border: 2px solid #00ffcc;
+      border-radius: 10px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      object-fit: cover;
+    }
+    .maintenance-gif:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 15px #00ffcc;
+    }
+    .message-btn {
+      display: block;
+      margin: 15px auto;
+      padding: 10px 15px;
+      background-color: #ff6f61;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9em;
+      transition: background-color 0.3s ease, transform 0.2s ease, border 0.2s ease;
+    }
+    .message-btn:hover {
+      background-color: #ffffff;
+      color: #ff6f61;
+      transform: translateY(-2px);
+      border: 1px solid #00ffcc;
+      box-shadow: 0 0 8px #00ffcc;
+    }
+    .daily-message {
+      font-style: italic;
+      margin: 10px auto;
+      max-width: 600px;
+      transition: opacity 0.5s ease;
+    }
+    .daily-message cite {
+      display: block;
+      margin-top: 5px;
+      font-size: 0.8em;
+      color: #00cc99;
+    }
     @media (max-width: 768px) {
       body {
         padding: 0;
       }
       .container {
         width: 100%;
-        margin: 0;
+        margin: 10px auto;
         border-radius: 0;
         min-height: 100vh;
+        padding-top: 80px; /* Ajuste para menu fixo em mobile */
       }
       .header {
         padding: 15px 100px 15px 15px;
         text-align: left;
       }
       .header h1 {
-        font-size: 1.5em;
+        font-size: 1.8em;
       }
       .header p {
         font-size: 0.8em;
@@ -397,7 +552,6 @@
         justify-content: center;
         padding: 8px;
         gap: 6px;
-        position: relative;
       }
       .nav-item {
         padding: 6px 10px;
@@ -406,10 +560,12 @@
         text-align: center;
       }
       .dropdown-content {
-        position: static;
+        position: absolute; /* Mantém dropdown fixo abaixo do botão */
         width: 100%;
         box-shadow: none;
         display: none;
+        top: 100%;
+        left: 0;
       }
       .dropdown.open .dropdown-content {
         display: block;
@@ -419,14 +575,14 @@
         padding: 8px 12px;
         text-align: center;
       }
-      .subtabs {
+      .subtabs, .sub-subtabs {
         flex-direction: row;
         flex-wrap: wrap;
         gap: 6px;
       }
-      .subtab {
+      .subtab, .sub-subtab {
         padding: 6px 10px;
-        font-size: 0.8em;
+        font-size: 0.7em;
         flex: 1 1 auto;
         text-align: center;
       }
@@ -435,6 +591,9 @@
         margin: 5px;
         min-height: calc(100vh - 200px);
         overflow-y: auto;
+      }
+      .tab-content h3 {
+        font-size: 1.1em;
       }
       .audio-controls {
         top: 5px;
@@ -482,6 +641,44 @@
       }
       .product-item:hover {
         transform: scale(1.3);
+      }
+      .contact-item, .download-item {
+        padding: 8px 12px;
+        margin: 6px 0;
+      }
+      .contact-item svg, .download-item svg {
+        width: 20px;
+        height: 20px;
+        margin-right: 10px;
+      }
+      .visitor-counter {
+        max-width: 200px;
+        padding: 10px;
+      }
+      .visitor-counter span {
+        font-size: 1em;
+      }
+      .partner-logo {
+        width: 150px;
+      }
+      .partners-grid {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+      }
+      .maintenance-gif {
+        width: 120px;
+        height: 120px;
+      }
+      .message-btn {
+        padding: 8px 12px;
+        font-size: 0.8em;
+      }
+      .daily-message {
+        font-size: 0.8em;
+      }
+      .daily-message cite {
+        font-size: 0.7em;
       }
     }
     @media (min-width: 769px) {
@@ -548,15 +745,18 @@
           <div class="bar"></div>
           <div class="bar"></div>
         </div>
-        <span class="volume-icon high" id="volume-icon" onclick="changeVolume()">
-          <svg class="volume-high" viewBox="0 0 24 24">
-            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+        <span class="volume-icon low" id="volume-icon" onclick="changeVolume()">
+          <svg class="volume-mute" viewBox="0 0 24 24" style="display: none;">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm11 0l3.5 3.5L14 15V9zm5.5 3l-2.5-2.5L19.5 7l2.5 2.5L19.5 12z"/>
+          </svg>
+          <svg class="volume-low" viewBox="0 0 24 24">
+            <path d="M3 9v6h4l5 5V4L7 9H3z"/>
           </svg>
           <svg class="volume-medium" viewBox="0 0 24 24" style="display: none;">
             <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
           </svg>
-          <svg class="volume-low" viewBox="0 0 24 24" style="display: none;">
-            <path d="M3 9v6h4l5 5V4L7 9H3z"/>
+          <svg class="volume-high" viewBox="0 0 24 24" style="display: none;">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
           </svg>
         </span>
       </div>
@@ -564,7 +764,7 @@
     <div class="nav-menu">
       <div class="nav-item active" onclick="openTab('home')">Página Principal</div>
       <div class="nav-item" onclick="openTab('quemsomos')">Quem Somos</div>
-      <div class="nav-item dropdown" onclick="toggleDropdown(event)">
+      <div class="nav-item dropdown" onclick="toggleDropdown(event, 'produtos')">
         <span class="dropdown-toggle">Produtos</span>
         <div class="dropdown-content">
           <a onclick="openTab('produtos'); openSubTab('paes')">Pães</a>
@@ -574,12 +774,24 @@
         </div>
       </div>
       <div class="nav-item" onclick="openTab('contatos')">Contatos</div>
-      <div class="nav-item" onclick="openTab('downloads')">Downloads</div>
-      <div class="nav-item" onclick="openTab('parcerias')">Parcerias</div>
+      <div class="nav-item dropdown" onclick="toggleDropdown(event, 'downloads')">
+        <span class="dropdown-toggle">Downloads</span>
+        <div class="dropdown-content">
+          <a onclick="openTab('downloads'); openSubTab('texto')">Texto</a>
+          <a onclick="openTab('downloads'); openSubTab('imagens')">Imagens</a>
+          <a onclick="openTab('downloads'); openSubTab('audios')">Áudios</a>
+          <a onclick="openTab('downloads'); openSubTab('videos')">Vídeos</a>
+          <a onclick="openTab('downloads'); openSubTab('programas')">Programas</a>
+        </div>
+      </div>
+      <div class="nav-item" onclick="openTab('parceiros')">Parceiros</div>
     </div>
 
     <!-- Conteúdo das abas -->
     <div id="home" class="tab-content active">
+      <h3>Mensagem do Dia</h3>
+      <p id="daily-message" class="daily-message"></p>
+      <button class="message-btn" onclick="nextMessage()">Próxima Mensagem</button>
       <h2>Bem-vindo à Vita Gula!</h2>
       <p>Desde 2001, a Fábrica Vita Gula transforma momentos simples em experiências inesquecíveis com nossos produtos artesanais. Nossa paixão por pães, biscoitos, bolos e outras delícias é guiada pela qualidade, tradição e inovação.</p>
       <p>Explore nossa linha de produtos, conheça nossa história e junte-se a nós para saborear o que há de melhor na culinária artesanal!</p>
@@ -733,32 +945,114 @@
     <div id="contatos" class="tab-content">
       <h2>Entre em Contato</h2>
       <p>Estamos prontos para atender você! Entre em contato conosco pelos canais abaixo:</p>
-      <ul>
-        <li>📧 E-mail: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2f19061b0e081a030e2f07001b020e0603410c0002">[email&#160;protected]</a></li>
-        <li>📞 Telefone: (11) 1234-5678</li>
-        <li>📍 Endereço: Avenida das Delícias, 33, São Paulo - SP</li>
-        <li>📜 CNPJ: 12.345.678/0001-99</li>
+      <ul class="contact-list">
+        <li class="contact-item">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/>
+          </svg>
+          <span>Endereço: Avenida Presidente Eurico Dutra 33-C - ESPLANADA I</span>
+        </li>
+        <li class="contact-item">
+          <svg viewBox="0 0 24 24">
+            <path d="M19 4H5c-1.11 0-2 .9-2 2v12c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H5V8l7 5 7-5v10zm-7-7l-7-5h14l-7 5z"/>
+          </svg>
+          <span>E-mail: <a href="mailto:vitagula@hotmail.com">vitagula@hotmail.com</a></span>
+        </li>
+        <li class="contact-item">
+          <svg viewBox="0 0 24 24">
+            <path d="M21 7h-3V4c0-1.1-.9-2-2-2H8c-1.1 0-2 .9-2 2v3H3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zM8 4h8v3H8V4zm13 17H3V9h3v3h12V9h3v12z"/>
+          </svg>
+          <span>CNPJ: 08.356.169/0001-63</span>
+        </li>
+        <li class="contact-item">
+          <svg viewBox="0 0 24 24">
+            <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.24 1.02l-2.2 2.2z"/>
+          </svg>
+          <span>Telefone: <a href="https://wa.me/+558888585090">+55 88 8858-5090</a></span>
+        </li>
       </ul>
-      <p>Horário de atendimento: Segunda a Sexta, das 8h às 18h.</p>
+      <p>Horário de atendimento: Segunda a Sexta, das 7h às 18h.</p>
     </div>
 
     <div id="downloads" class="tab-content">
       <h2>Downloads</h2>
-      <p>Faça o download de nossos catálogos e materiais promocionais:</p>
-      <ul>
-        <li><a href="#" style="color: #ff6f61; text-decoration: none;">📥 Catálogo de Produtos 2023 (PDF)</a></li>
-        <li><a href="#" style="color: #ff6f61; text-decoration: none;">📥 Receitas Exclusivas Vita Gula (PDF)</a></li>
-      </ul>
+      <div class="subtabs">
+        <div class="subtab active" onclick="openSubTab('texto')">Texto</div>
+        <div class="subtab" onclick="openSubTab('imagens')">Imagens</div>
+        <div class="subtab" onclick="openSubTab('audios')">Áudios</div>
+        <div class="subtab" onclick="openSubTab('videos')">Vídeos</div>
+        <div class="subtab" onclick="openSubTab('programas')">Programas</div>
+      </div>
+      <div id="texto" class="subtab-content active">
+        <h2>Textos e Documentos</h2>
+        <div class="sub-subtabs">
+          <div class="sub-subtab active" onclick="openSubSubTab('texto-catalogo')">Catálogo</div>
+          <div class="sub-subtab" onclick="openSubSubTab('texto-livros')">Livros</div>
+          <div class="sub-subtab" onclick="openSubSubTab('texto-dicas')">Dicas</div>
+          <div class="sub-subtab" onclick="openSubSubTab('texto-outros')">Outros</div>
+        </div>
+        <div id="texto-catalogo" class="sub-subtab-content active">
+          <p>Baixe nosso catálogo de produtos:</p>
+          <ul class="download-list">
+            <li class="download-item">
+              <svg viewBox="0 0 24 24">
+                <path d="M6 2c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6H6zm7 7V3.5L18.5 9H13z"/>
+              </svg>
+              <span><a href="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/down/CatalogoVitaGula.pdf" target="_blank">Catálogo de Produtos</a></span>
+            </li>
+          </ul>
+        </div>
+        <div id="texto-livros" class="sub-subtab-content maintenance">
+          <h3>Página em manutenção</h3>
+          <img class="maintenance-gif" src="https://media.giphy.com/media/3o6Zta2kQeMOXbZx6w/giphy.gif" alt="Manutenção Livros">
+        </div>
+        <div id="texto-dicas" class="sub-subtab-content maintenance">
+          <h3>Página em manutenção</h3>
+          <img class="maintenance-gif" src="https://media.giphy.com/media/3o6Zta2kQeMOXbZx6w/giphy.gif" alt="Manutenção Dicas">
+        </div>
+        <div id="texto-outros" class="sub-subtab-content maintenance">
+          <h3>Página em manutenção</h3>
+          <img class="maintenance-gif" src="https://media.giphy.com/media/3o6Zta2kQeMOXbZx6w/giphy.gif" alt="Manutenção Outros">
+        </div>
+      </div>
+      <div id="imagens" class="subtab-content">
+        <h3>Página em manutenção</h3>
+        <img class="maintenance-gif" src="https://media.giphy.com/media/26uf2JHNVK1iVRt5e/giphy.gif" alt="Manutenção Imagens">
+      </div>
+      <div id="audios" class="subtab-content">
+        <h3>Página em manutenção</h3>
+        <img class="maintenance-gif" src="https://media.giphy.com/media/3o6ZsXg3vU6kZfKz6w/giphy.gif" alt="Manutenção Áudios">
+      </div>
+      <div id="videos" class="subtab-content">
+        <h3>Página em manutenção</h3>
+        <img class="maintenance-gif" src="https://media.giphy.com/media/3o7btPCcdNniYF1oHs/giphy.gif" alt="Manutenção Vídeos">
+      </div>
+      <div id="programas" class="subtab-content">
+        <h3>Página em manutenção</h3>
+        <img class="maintenance-gif" src="https://media.giphy.com/media/26xBwdIuR0bmFzSyA/giphy.gif" alt="Manutenção Programas">
+      </div>
     </div>
 
-    <div id="parcerias" class="tab-content">
-      <h2>Parcerias</h2>
-      <p>Quer ser um parceiro da Vita Gula? Trabalhamos com distribuidores, revendedores e eventos especiais.</p>
-      <p>Entre em contato para saber mais sobre nossas condições de parceria:</p>
-      <ul>
-        <li>📧 E-mail: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="512738253036243d3011393e253c30383d7f323e3c">[email&#160;protected]</a></li>
-        <li>📞 Telefone: (11) 8765-4321</li>
-      </ul>
+    <div id="parceiros" class="tab-content">
+      <h2>Parceiros</h2>
+      <div class="partners-grid">
+        <a href="https://casagarciafortaleza.com.br/index.php" target="_blank">
+          <img class="partner-logo" src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/parcerias/casagarcia.png" alt="Casa Garcia Fortaleza">
+        </a>
+        <a href="https://www.instagram.com/atacarejo.sb/?hl=en" target="_blank">
+          <img class="partner-logo" src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/parcerias/sb.png" alt="Atacarejo SB">
+        </a>
+        <a href="https://www.3coracoes.com.br/" target="_blank">
+          <img class="partner-logo" src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/parcerias/3coracoes.png" alt="3 Corações">
+        </a>
+        <a href="https://www.instagram.com/varejaodotrigo/" target="_blank">
+          <img class="partner-logo" src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/parcerias/varejaodotrigo.png" alt="Varejão do Trigo">
+        </a>
+      </div>
+    </div>
+
+    <div class="visitor-counter">
+      Visitas: <span id="visit-count">0</span>
     </div>
   </div>
 
@@ -769,7 +1063,60 @@
 
   <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
   <script>
-    let volumeLevel = 2;
+    // Mensagem do Dia
+    const messages = [
+      { text: "Bem-aventurados os misericordiosos, porque alcançarão misericórdia.", cite: "São Mateus 5:7" },
+      { text: "Ama e faze o que quiseres.", cite: "Santo Agostinho" },
+      { text: "Tudo posso naquele que me fortalece.", cite: "Filipenses 4:13" },
+      { text: "Nada te perturbe, nada te espante, tudo passa, Deus não muda.", cite: "Santa Teresa de Ávila" },
+      { text: "Se Deus é por nós, quem será contra nós?", cite: "Romanos 8:31" },
+      { text: "O coração puro é o que ama a Deus acima de tudo.", cite: "São João Maria Vianney" },
+      { text: "Não temas, pois estou contigo.", cite: "Isaías 41:10" },
+      { text: "A humildade é a base de todas as virtudes.", cite: "São Francisco de Assis" },
+      { text: "Buscai primeiro o Reino de Deus e sua justiça.", cite: "São Mateus 6:33" },
+      { text: "A oração é a chave que abre o coração de Deus.", cite: "São Padre Pio" }
+    ];
+
+    function updateDailyMessage() {
+      try {
+        const now = new Date();
+        const today = now.toDateString();
+        let messageIndex = parseInt(localStorage.getItem('messageIndex')) || 0;
+        let lastUpdate = localStorage.getItem('lastMessageUpdate');
+
+        if (lastUpdate !== today) {
+          messageIndex = (messageIndex + 1) % messages.length;
+          localStorage.setItem('messageIndex', messageIndex);
+          localStorage.setItem('lastMessageUpdate', today);
+        }
+
+        const message = messages[messageIndex];
+        const messageElement = document.getElementById('daily-message');
+        messageElement.style.opacity = '0';
+        setTimeout(() => {
+          messageElement.innerHTML = `${message.text}<cite>${message.cite}</cite>`;
+          messageElement.style.opacity = '1';
+        }, 200);
+      } catch (e) {
+        console.error('Erro ao atualizar mensagem:', e);
+        document.getElementById('daily-message').innerHTML = 'Mensagem indisponível no momento.<cite>Erro</cite>';
+      }
+    }
+
+    function nextMessage() {
+      try {
+        let messageIndex = parseInt(localStorage.getItem('messageIndex')) || 0;
+        messageIndex = (messageIndex + 1) % messages.length;
+        localStorage.setItem('messageIndex', messageIndex);
+        localStorage.setItem('lastMessageUpdate', new Date().toDateString());
+        updateDailyMessage();
+      } catch (e) {
+        console.error('Erro ao mudar mensagem:', e);
+      }
+    }
+
+    // Áudio
+    let volumeLevel = 0;
     const audio = document.getElementById('background-audio');
     const audioSource = document.getElementById('audio-source');
     const waveform = document.getElementById('waveform');
@@ -790,15 +1137,17 @@
     }
 
     function changeVolume() {
-      volumeLevel = (volumeLevel + 1) % 3;
+      volumeLevel = (volumeLevel + 1) % 4;
       const volumeIcon = document.getElementById('volume-icon');
-      const highIcon = volumeIcon.querySelector('.volume-high');
-      const mediumIcon = volumeIcon.querySelector('.volume-medium');
+      const muteIcon = volumeIcon.querySelector('.volume-mute');
       const lowIcon = volumeIcon.querySelector('.volume-low');
-      volumeIcon.classList.remove('low', 'medium', 'high');
-      highIcon.style.display = 'none';
-      mediumIcon.style.display = 'none';
+      const mediumIcon = volumeIcon.querySelector('.volume-medium');
+      const highIcon = volumeIcon.querySelector('.volume-high');
+      volumeIcon.classList.remove('mute', 'low', 'medium', 'high');
+      muteIcon.style.display = 'none';
       lowIcon.style.display = 'none';
+      mediumIcon.style.display = 'none';
+      highIcon.style.display = 'none';
       if (volumeLevel === 0) {
         volumeIcon.classList.add('low');
         lowIcon.style.display = 'block';
@@ -807,10 +1156,14 @@
         volumeIcon.classList.add('medium');
         mediumIcon.style.display = 'block';
         audio.volume = 0.6;
-      } else {
+      } else if (volumeLevel === 2) {
         volumeIcon.classList.add('high');
         highIcon.style.display = 'block';
         audio.volume = 1.0;
+      } else {
+        volumeIcon.classList.add('mute');
+        muteIcon.style.display = 'block';
+        audio.volume = 0.0;
       }
     }
 
@@ -873,7 +1226,7 @@
       playNext();
     });
 
-    audio.volume = 1.0;
+    audio.volume = 0.3;
     audio.src = tracks[currentTrackIndex];
     audio.load();
 
@@ -890,21 +1243,32 @@
       console.log("Audio can play through: " + tracks[currentTrackIndex]);
     });
 
-    // Funções para alternar abas e subabas
+    // Contador de visitas
+    document.addEventListener('DOMContentLoaded', () => {
+      try {
+        let visitCount = localStorage.getItem('visitCount') || 0;
+        visitCount = parseInt(visitCount) + 1;
+        localStorage.setItem('visitCount', visitCount);
+        document.getElementById('visit-count').textContent = visitCount;
+      } catch (e) {
+        console.error('Erro no contador de visitas:', e);
+        document.getElementById('visit-count').textContent = 'N/A';
+      }
+      updateDailyMessage();
+    });
+
+    // Funções para alternar abas, subabas e sub-subabas
     function openTab(tabName) {
       const tabs = document.getElementsByClassName('tab-content');
       const navItems = document.getElementsByClassName('nav-item');
       
-      // Esconder todas as abas
       for (let i = 0; i < tabs.length; i++) {
         tabs[i].classList.remove('active');
       }
-      // Remover classe active de todos os itens do menu
       for (let i = 0; i < navItems.length; i++) {
         navItems[i].classList.remove('active');
       }
       
-      // Mostrar a aba selecionada e marcar o item do menu como ativo
       const selectedTab = document.getElementById(tabName);
       if (selectedTab) {
         selectedTab.classList.add('active');
@@ -915,7 +1279,6 @@
         activeNavItem.classList.add('active');
       }
 
-      // Se a aba for "produtos", abrir a subaba "paes" por padrão, mas apenas se nenhuma outra subaba foi selecionada
       if (tabName === 'produtos') {
         const activeSubTab = document.querySelector('.subtab-content.active');
         if (!activeSubTab) {
@@ -923,11 +1286,16 @@
         }
       }
 
-      // Fechar o dropdown após selecionar uma aba
-      const dropdown = document.querySelector('.dropdown');
-      if (dropdown) {
-        dropdown.classList.remove('open');
+      if (tabName === 'downloads') {
+        const activeSubTab = document.querySelector('.subtab-content.active');
+        if (!activeSubTab) {
+          openSubTab('texto');
+        }
       }
+
+      // Fechar todos os dropdowns
+      const dropdowns = document.querySelectorAll('.dropdown');
+      dropdowns.forEach(d => d.classList.remove('open'));
     }
 
     function openSubTab(subTabName) {
@@ -935,44 +1303,65 @@
       const subTabButtons = document.getElementsByClassName('subtab');
       const dropdownLinks = document.querySelectorAll('.dropdown-content a');
       
-      // Esconder todas as subabas
       for (let i = 0; i < subTabs.length; i++) {
         subTabs[i].classList.remove('active');
       }
-      // Remover classe active de todos os botões de subaba
       for (let i = 0; i < subTabButtons.length; i++) {
         subTabButtons[i].classList.remove('active');
       }
-      // Remover classe active de todos os links do dropdown
       for (let i = 0; i < dropdownLinks.length; i++) {
         dropdownLinks[i].classList.remove('active');
       }
       
-      // Mostrar a subaba selecionada
       const selectedSubTab = document.getElementById(subTabName);
       if (selectedSubTab) {
         selectedSubTab.classList.add('active');
       }
 
-      // Marcar o botão de subaba correspondente como ativo
       const activeSubTabButton = Array.from(subTabButtons).find(button => button.getAttribute('onclick').includes(subTabName));
       if (activeSubTabButton) {
         activeSubTabButton.classList.add('active');
       }
 
-      // Marcar o link do dropdown correspondente como ativo
       const activeDropdownLink = Array.from(dropdownLinks).find(link => link.getAttribute('onclick').includes(subTabName));
       if (activeDropdownLink) {
         activeDropdownLink.classList.add('active');
       }
+
+      if (subTabName === 'texto') {
+        const activeSubSubTab = document.querySelector('.sub-subtab-content.active');
+        if (!activeSubSubTab) {
+          openSubSubTab('texto-catalogo');
+        }
+      }
     }
 
-    // Função para alternar o dropdown no modo mobile
-    function toggleDropdown(event) {
+    function openSubSubTab(subSubTabName) {
+      const subSubTabs = document.getElementsByClassName('sub-subtab-content');
+      const subSubTabButtons = document.getElementsByClassName('sub-subtab');
+      
+      for (let i = 0; i < subSubTabs.length; i++) {
+        subSubTabs[i].classList.remove('active');
+      }
+      for (let i = 0; i < subSubTabButtons.length; i++) {
+        subSubTabButtons[i].classList.remove('active');
+      }
+      
+      const selectedSubSubTab = document.getElementById(subSubTabName);
+      if (selectedSubSubTab) {
+        selectedSubSubTab.classList.add('active');
+      }
+
+      const activeSubSubTabButton = Array.from(subSubTabButtons).find(button => button.getAttribute('onclick').includes(subSubTabName));
+      if (activeSubSubTabButton) {
+        activeSubSubTabButton.classList.add('active');
+      }
+    }
+
+    function toggleDropdown(event, tabName) {
       const dropdown = event.currentTarget;
       const isOpen = dropdown.classList.contains('open');
       
-      // Fechar outros dropdowns abertos
       const allDropdowns = document.querySelectorAll('.dropdown');
       allDropdowns.forEach(d => {
         if (d !== dropdown) {
@@ -980,26 +1369,24 @@
         }
       });
 
-      // Alternar o estado do dropdown atual
       dropdown.classList.toggle('open');
 
-      // Se o dropdown foi aberto, abrir a aba "produtos"
       if (!isOpen) {
-        openTab('produtos');
+        openTab(tabName);
       }
 
       event.stopPropagation();
     }
 
-    // Fechar o dropdown ao clicar fora dele
     document.addEventListener('click', (event) => {
-      const dropdown = document.querySelector('.dropdown');
-      if (dropdown && !dropdown.contains(event.target)) {
-        dropdown.classList.remove('open');
-      }
+      const dropdowns = document.querySelectorAll('.dropdown');
+      dropdowns.forEach(dropdown => {
+        if (!dropdown.contains(event.target)) {
+          dropdown.classList.remove('open');
+        }
+      });
     });
 
-    // Inicializar a aba "home"
     document.addEventListener('DOMContentLoaded', () => {
       openTab('home');
     });
