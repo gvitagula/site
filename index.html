@@ -293,7 +293,6 @@
       align-items: center;
       width: 100%;
       margin-bottom: 6px;
-      position: relative;
     }
     .control-buttons .control-btn {
       cursor: pointer;
@@ -317,41 +316,26 @@
       font-size: 1em;
     }
     .volume-icon {
-      position: absolute;
-      top: -15px;
-      right: 5px;
-      display: inline-block;
-      width: 18px;
-      height: 18px;
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 24px;
+      height: 24px;
       cursor: pointer;
       color: #ffffff;
-      font-size: 1em;
-      transition: transform 0.1s ease;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 50%;
+      transition: transform 0.2s ease, background-color 0.2s ease;
+      margin-top: 8px;
     }
     .volume-icon:hover {
-      transform: scale(1.2);
+      transform: scale(1.15);
+      background-color: rgba(255, 255, 255, 0.3);
     }
-    .volume-icon.low::after {
-      content: '🔈';
-      position: absolute;
-      left: 0;
-      top: 0;
-      font-size: 1em;
-    }
-    .volume-icon.medium::after {
-      content: '🔉';
-      position: absolute;
-      left: 0;
-      top: 0;
-      font-size: 1em;
-    }
-    .volume-icon.high::after {
-      content: '🔊';
-      position: absolute;
-      left: 0;
-      top: 0;
-      font-size: 1em;
+    .volume-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: #ffffff;
     }
     .waveform {
       width: 100%;
@@ -398,7 +382,7 @@
         min-height: 100vh;
       }
       .header {
-        padding: 15px 100px 15px 15px; /* Espaço à direita para evitar sobreposição com audio-controls */
+        padding: 15px 100px 15px 15px;
         text-align: left;
       }
       .header h1 {
@@ -455,7 +439,7 @@
       .audio-controls {
         top: 5px;
         right: 5px;
-        width: 100px; /* Reduzido ainda mais */
+        width: 100px;
         padding: 4px 6px;
       }
       .control-buttons {
@@ -471,14 +455,13 @@
         font-size: 0.9em;
       }
       .volume-icon {
-        right: 4px;
-        top: -12px;
-        font-size: 0.9em;
+        width: 20px;
+        height: 20px;
+        margin-top: 6px;
       }
-      .volume-icon.low::after,
-      .volume-icon.medium::after,
-      .volume-icon.high::after {
-        font-size: 0.9em;
+      .volume-icon svg {
+        width: 16px;
+        height: 16px;
       }
       .waveform {
         height: 10px;
@@ -554,7 +537,6 @@
           <span class="control-btn" id="prev-btn" onclick="playPrevious()">⏮</span>
           <span class="control-btn play-pause-btn" id="play-pause-btn" onclick="togglePlayPause()">▶</span>
           <span class="control-btn" id="next-btn" onclick="playNext()">⏭</span>
-          <span class="volume-icon high" id="volume-icon" onclick="changeVolume()"></span>
         </div>
         <div class="waveform" id="waveform">
           <div class="bar"></div>
@@ -566,6 +548,17 @@
           <div class="bar"></div>
           <div class="bar"></div>
         </div>
+        <span class="volume-icon high" id="volume-icon" onclick="changeVolume()">
+          <svg class="volume-high" viewBox="0 0 24 24">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+          </svg>
+          <svg class="volume-medium" viewBox="0 0 24 24" style="display: none;">
+            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+          </svg>
+          <svg class="volume-low" viewBox="0 0 24 24" style="display: none;">
+            <path d="M3 9v6h4l5 5V4L7 9H3z"/>
+          </svg>
+        </span>
       </div>
     </div>
     <div class="nav-menu">
@@ -741,9 +734,10 @@
       <h2>Entre em Contato</h2>
       <p>Estamos prontos para atender você! Entre em contato conosco pelos canais abaixo:</p>
       <ul>
-        <li>📧 E-mail: contato@vitagula.com.br</li>
+        <li>📧 E-mail: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="2f19061b0e081a030e2f07001b020e0603410c0002">[email&#160;protected]</a></li>
         <li>📞 Telefone: (11) 1234-5678</li>
-        <li>📍 Endereço: Rua das Delícias, 123, São Paulo - SP</li>
+        <li>📍 Endereço: Avenida das Delícias, 33, São Paulo - SP</li>
+        <li>📜 CNPJ: 12.345.678/0001-99</li>
       </ul>
       <p>Horário de atendimento: Segunda a Sexta, das 8h às 18h.</p>
     </div>
@@ -753,7 +747,7 @@
       <p>Faça o download de nossos catálogos e materiais promocionais:</p>
       <ul>
         <li><a href="#" style="color: #ff6f61; text-decoration: none;">📥 Catálogo de Produtos 2023 (PDF)</a></li>
-        <li><a href="#" style="color: #ff6f61; text-decoration: none;">📥 \Receitas Exclusivas Vita Gula (PDF)</a></li>
+        <li><a href="#" style="color: #ff6f61; text-decoration: none;">📥 Receitas Exclusivas Vita Gula (PDF)</a></li>
       </ul>
     </div>
 
@@ -762,7 +756,7 @@
       <p>Quer ser um parceiro da Vita Gula? Trabalhamos com distribuidores, revendedores e eventos especiais.</p>
       <p>Entre em contato para saber mais sobre nossas condições de parceria:</p>
       <ul>
-        <li>📧 E-mail: parcerias@vitagula.com.br</li>
+        <li>📧 E-mail: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="512738253036243d3011393e253c30383d7f323e3c">[email&#160;protected]</a></li>
         <li>📞 Telefone: (11) 8765-4321</li>
       </ul>
     </div>
@@ -798,15 +792,24 @@
     function changeVolume() {
       volumeLevel = (volumeLevel + 1) % 3;
       const volumeIcon = document.getElementById('volume-icon');
+      const highIcon = volumeIcon.querySelector('.volume-high');
+      const mediumIcon = volumeIcon.querySelector('.volume-medium');
+      const lowIcon = volumeIcon.querySelector('.volume-low');
       volumeIcon.classList.remove('low', 'medium', 'high');
+      highIcon.style.display = 'none';
+      mediumIcon.style.display = 'none';
+      lowIcon.style.display = 'none';
       if (volumeLevel === 0) {
         volumeIcon.classList.add('low');
+        lowIcon.style.display = 'block';
         audio.volume = 0.3;
       } else if (volumeLevel === 1) {
         volumeIcon.classList.add('medium');
+        mediumIcon.style.display = 'block';
         audio.volume = 0.6;
       } else {
         volumeIcon.classList.add('high');
+        highIcon.style.display = 'block';
         audio.volume = 1.0;
       }
     }
