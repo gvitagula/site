@@ -44,6 +44,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fábrica Vita Gula</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Orbitron:wght@400&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js" defer></script>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -711,47 +712,15 @@
   </style>
 </head>
 <body onclick="handleFirstClick()">
-  <script type="text/javascript">
-    var gk_isXlsx = false;
-    var gk_xlsxFileLookup = {};
-    var gk_fileData = {};
-    function filledCell(cell) {
-      return cell !== '' && cell != null;
-    }
-    function loadFileData(filename) {
-      if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-        try {
-          var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-          var firstSheetName = workbook.SheetNames[0];
-          var worksheet = workbook.Sheets[firstSheetName];
-          var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-          var filteredData = jsonData.filter(row => row.some(filledCell));
-          var headerRowIndex = filteredData.findIndex((row, index) =>
-            row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-          );
-          if (headerRowIndex === -1 || headerRowIndex > 25) {
-            headerRowIndex = 0;
-          }
-          var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
-          csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-          return csv;
-        } catch (e) {
-          console.error(e);
-          return "";
-        }
-      }
-      return gk_fileData[filename] || "";
-    }
-  </script>
   <div class="container">
     <div class="header">
       <h1>Fábrica Vita Gula</h1>
       <p>Sabor, Tradição e Qualidade Desde 2001</p>
-      <div class="audio-controls">
+      <div class="audio-controls" role="region" aria-label="Controles de áudio">
         <div class="control-buttons">
-          <span class="control-btn" id="prev-btn" onclick="playPrevious()">⏮</span>
-          <span class="control-btn play-pause-btn" id="play-pause-btn" onclick="togglePlayPause()">▶</span>
-          <span class="control-btn" id="next-btn" onclick="playNext()">⏭</span>
+          <span class="control-btn" id="prev-btn" onclick="playPrevious()" aria-label="Tocar faixa anterior">⏮</span>
+          <span class="control-btn play-pause-btn" id="play-pause-btn" onclick="togglePlayPause()" aria-label="Tocar ou pausar">▶</span>
+          <span class="control-btn" id="next-btn" onclick="playNext()" aria-label="Tocar próxima faixa">⏭</span>
         </div>
         <div class="waveform" id="waveform">
           <div class="bar"></div>
@@ -763,7 +732,7 @@
           <div class="bar"></div>
           <div class="bar"></div>
         </div>
-        <span class="volume-icon low" id="volume-icon" onclick="changeVolume()">
+        <span class="volume-icon low" id="volume-icon" onclick="changeVolume()" aria-label="Ajustar volume">
           <svg class="volume-mute" viewBox="0 0 24 24" style="display: none;">
             <path d="M3 9v6h4l5 5V4L7 9H3zm11 0l3.5 3.5L14 15V9zm5.5 3l-2.5-2.5L19.5 7l2.5 2.5L19.5 12z"/>
           </svg>
@@ -779,43 +748,43 @@
         </span>
       </div>
     </div>
-    <div class="nav-menu">
-      <div class="nav-item active" onmouseover="playHoverSound()" onclick="openTab('home'); playClickSound()">Página Principal</div>
-      <div class="nav-item" onmouseover="playHoverSound()" onclick="openTab('quemsomos'); playClickSound()">Quem Somos</div>
-      <div class="nav-item dropdown" onmouseover="playHoverSound()" onclick="toggleDropdown(event, 'produtos'); playClickSound()">
+    <div class="nav-menu" role="navigation" aria-label="Menu principal">
+      <div class="nav-item active" onclick="openTab('home')" role="tab" aria-selected="true">Página Principal</div>
+      <div class="nav-item" onclick="openTab('quemsomos')" role="tab" aria-selected="false">Quem Somos</div>
+      <div class="nav-item dropdown" onclick="toggleDropdown(event, 'produtos')" role="tab" aria-selected="false">
         <span class="dropdown-toggle">Produtos</span>
         <div class="dropdown-content">
-          <a onmouseover="playHoverSound()" onclick="openTab('produtos'); openSubTab('paes'); playClickSound()">Pães</a>
-          <a onmouseover="playHoverSound()" onclick="openTab('produtos'); openSubTab('biscoitos'); playClickSound()">Biscoitos</a>
-          <a onmouseover="playHoverSound()" onclick="openTab('produtos'); openSubTab('bolos'); playClickSound()">Bolos</a>
-          <a onmouseover="playHoverSound()" onclick="openTab('produtos'); openSubTab('outros'); playClickSound()">Outros Produtos</a>
+          <a onclick="openTab('produtos'); openSubTab('paes')" role="menuitem">Pães</a>
+          <a onclick="openTab('produtos'); openSubTab('biscoitos')" role="menuitem">Biscoitos</a>
+          <a onclick="openTab('produtos'); openSubTab('bolos')" role="menuitem">Bolos</a>
+          <a onclick="openTab('produtos'); openSubTab('outros')" role="menuitem">Outros Produtos</a>
         </div>
       </div>
-      <div class="nav-item" onmouseover="playHoverSound()" onclick="openTab('contatos'); playClickSound()">Contatos</div>
-      <div class="nav-item dropdown" onmouseover="playHoverSound()" onclick="toggleDropdown(event, 'downloads'); playClickSound()">
+      <div class="nav-item" onclick="openTab('contatos')" role="tab" aria-selected="false">Contatos</div>
+      <div class="nav-item dropdown" onclick="toggleDropdown(event, 'downloads')" role="tab" aria-selected="false">
         <span class="dropdown-toggle">Downloads</span>
         <div class="dropdown-content">
-          <a onmouseover="playHoverSound()" onclick="openTab('downloads'); openSubTab('texto'); playClickSound()">Texto</a>
-          <a onmouseover="playHoverSound()" onclick="openTab('downloads'); openSubTab('imagens'); playClickSound()">Imagens</a>
-          <a onmouseover="playHoverSound()" onclick="openTab('downloads'); openSubTab('audios'); playClickSound()">Áudios</a>
-          <a onmouseover="playHoverSound()" onclick="openTab('downloads'); openSubTab('videos'); playClickSound()">Vídeos</a>
-          <a onmouseover="playHoverSound()" onclick="openTab('downloads'); openSubTab('programas'); playClickSound()">Programas</a>
+          <a onclick="openTab('downloads'); openSubTab('texto')" role="menuitem">Texto</a>
+          <a onclick="openTab('downloads'); openSubTab('imagens')" role="menuitem">Imagens</a>
+          <a onclick="openTab('downloads'); openSubTab('audios')" role="menuitem">Áudios</a>
+          <a onclick="openTab('downloads'); openSubTab('videos')" role="menuitem">Vídeos</a>
+          <a onclick="openTab('downloads'); openSubTab('programas')" role="menuitem">Programas</a>
         </div>
       </div>
-      <div class="nav-item" onmouseover="playHoverSound()" onclick="openTab('parceiros'); playClickSound()">Parceiros</div>
+      <div class="nav-item" onclick="openTab('parceiros')" role="tab" aria-selected="false">Parceiros</div>
     </div>
 
     <!-- Conteúdo das abas -->
-    <div id="home" class="tab-content active">
+    <div id="home" class="tab-content active" role="tabpanel">
       <h3>Mensagem do Dia</h3>
       <p id="daily-message" class="daily-message"></p>
-      <button class="message-btn" onmouseover="playHoverSound()" onclick="nextMessage(); playClickSound()">Próxima Mensagem</button>
+      <button class="message-btn" onclick="nextMessage()">Próxima Mensagem</button>
       <h2>Bem-vindo à Vita Gula!</h2>
       <p>Desde 2001, a Fábrica Vita Gula transforma momentos simples em experiências inesquecíveis com nossos produtos artesanais. Nossa paixão por pães, biscoitos, bolos e outras delícias é guiada pela qualidade, tradição e inovação.</p>
       <p>Explore nossa linha de produtos, conheça nossa história e junte-se a nós para saborear o que há de melhor na culinária artesanal!</p>
     </div>
 
-    <div id="quemsomos" class="tab-content">
+    <div id="quemsomos" class="tab-content" role="tabpanel">
       <h2>🌟 Sobre a Vita Gula</h2>
       <p>Fundada em 2001, a Vita Gula é mais do que uma fábrica de alimentos: somos criadores de memórias. Cada pão, biscoito ou bolo que produzimos carrega o cuidado e a dedicação de nossa equipe, unindo receitas tradicionais a técnicas modernas.</p>
       <h3>💡 Nossa Missão</h3>
@@ -830,13 +799,13 @@
       <p>Estamos presentes em cafés da manhã, lanches e celebrações, oferecendo produtos que tornam cada ocasião especial. Junte-se a nós nessa jornada de sabor!</p>
     </div>
 
-    <div id="produtos" class="tab-content">
+    <div id="produtos" class="tab-content" role="tabpanel">
       <h2>Nossos Produtos</h2>
       <div class="subtabs">
-        <div class="subtab active" onmouseover="playHoverSound()" onclick="openSubTab('paes'); playClickSound()">Pães</div>
-        <div class="subtab" onmouseover="playHoverSound()" onclick="openSubTab('biscoitos'); playClickSound()">Biscoitos</div>
-        <div class="subtab" onmouseover="playHoverSound()" onclick="openSubTab('bolos'); playClickSound()">Bolos</div>
-        <div class="subtab" onmouseover="playHoverSound()" onclick="openSubTab('outros'); playClickSound()">Outros Produtos</div>
+        <div class="subtab active" onclick="openSubTab('paes')">Pães</div>
+        <div class="subtab" onclick="openSubTab('biscoitos')">Biscoitos</div>
+        <div class="subtab" onclick="openSubTab('bolos')">Bolos</div>
+        <div class="subtab" onclick="openSubTab('outros')">Outros Produtos</div>
       </div>
       <div id="paes" class="subtab-content active">
         <h2>Pães Artesanais</h2>
@@ -945,22 +914,22 @@
         <p>Conheça nossos outros produtos deliciosos, perfeitos para complementar suas refeições ou momentos especiais. Veja nossa seleção:</p>
         <div class="product-grid">
           <div class="product-item">
-            <img class="thumbnail" src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/outros_img/outro1.jpg" alt="Outro 1">
+            <img class="thumbnail" src="https://via.placeholder.com/100?text=Outro+1" alt="Outro 1" onerror="this.src='https://via.placeholder.com/100?text=Outro+1'">
           </div>
           <div class="product-item">
-            <img class="thumbnail" src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/outros_img/outro2.jpg" alt="Outro 2">
+            <img class="thumbnail" src="https://via.placeholder.com/100?text=Outro+2" alt="Outro 2" onerror="this.src='https://via.placeholder.com/100?text=Outro+2'">
           </div>
           <div class="product-item">
-            <img class="thumbnail" src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/outros_img/outro3.jpg" alt="Outro 3">
+            <img class="thumbnail" src="https://via.placeholder.com/100?text=Outro+3" alt="Outro 3" onerror="this.src='https://via.placeholder.com/100?text=Outro+3'">
           </div>
           <div class="product-item">
-            <img class="thumbnail" src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/outros_img/outro4.jpg" alt="Outro 4">
+            <img class="thumbnail" src="https://via.placeholder.com/100?text=Outro+4" alt="Outro 4" onerror="this.src='https://via.placeholder.com/100?text=Outro+4'">
           </div>
         </div>
       </div>
     </div>
 
-    <div id="contatos" class="tab-content">
+    <div id="contatos" class="tab-content" role="tabpanel">
       <h2>Entre em Contato</h2>
       <p>Estamos prontos para atender você! Entre em contato conosco pelos canais abaixo:</p>
       <ul class="contact-list">
@@ -974,7 +943,7 @@
           <svg viewBox="0 0 24 24">
             <path d="M19 4H5c-1.11 0-2 .9-2 2v12c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H5V8l7 5 7-5v10zm-7-7l-7-5h14l-7 5z"/>
           </svg>
-          <span>E-mail: <a href="mailto:vitagula@hotmail.com">vitagula@hotmail.com</a></span>
+          <span>E-mail: <a href="mailto:contato@vitagula.com.br">contato@vitagula.com.br</a></span>
         </li>
         <li class="contact-item">
           <svg viewBox="0 0 24 24">
@@ -992,22 +961,22 @@
       <p>Horário de atendimento: Segunda a Sexta, das 7h às 18h.</p>
     </div>
 
-    <div id="downloads" class="tab-content">
+    <div id="downloads" class="tab-content" role="tabpanel">
       <h2>Downloads</h2>
       <div class="subtabs">
-        <div class="subtab active" onmouseover="playHoverSound()" onclick="openSubTab('texto'); playClickSound()">Texto</div>
-        <div class="subtab" onmouseover="playHoverSound()" onclick="openSubTab('imagens'); playClickSound()">Imagens</div>
-        <div class="subtab" onmouseover="playHoverSound()" onclick="openSubTab('audios'); playClickSound()">Áudios</div>
-        <div class="subtab" onmouseover="playHoverSound()" onclick="openSubTab('videos'); playClickSound()">Vídeos</div>
-        <div class="subtab" onmouseover="playHoverSound()" onclick="openSubTab('programas'); playClickSound()">Programas</div>
+        <div class="subtab active" onclick="openSubTab('texto')">Texto</div>
+        <div class="subtab" onclick="openSubTab('imagens')">Imagens</div>
+        <div class="subtab" onclick="openSubTab('audios')">Áudios</div>
+        <div class="subtab" onclick="openSubTab('videos')">Vídeos</div>
+        <div class="subtab" onclick="openSubTab('programas')">Programas</div>
       </div>
       <div id="texto" class="subtab-content active">
         <h2>Textos e Documentos</h2>
         <div class="sub-subtabs">
-          <div class="sub-subtab active" onmouseover="playHoverSound()" onclick="openSubSubTab('texto-catalogo'); playClickSound()">Catálogo</div>
-          <div class="sub-subtab" onmouseover="playHoverSound()" onclick="openSubSubTab('texto-livros'); playClickSound()">Livros</div>
-          <div class="sub-subtab" onmouseover="playHoverSound()" onclick="openSubSubTab('texto-dicas'); playClickSound()">Dicas</div>
-          <div class="sub-subtab" onmouseover="playHoverSound()" onclick="openSubSubTab('texto-outros'); playClickSound()">Outros</div>
+          <div class="sub-subtab active" onclick="openSubSubTab('texto-catalogo')">Catálogo</div>
+          <div class="sub-subtab" onclick="openSubSubTab('texto-livros')">Livros</div>
+          <div class="sub-subtab" onclick="openSubSubTab('texto-dicas')">Dicas</div>
+          <div class="sub-subtab" onclick="openSubSubTab('texto-outros')">Outros</div>
         </div>
         <div id="texto-catalogo" class="sub-subtab-content active">
           <p>Baixe nosso catálogo de produtos:</p>
@@ -1083,7 +1052,7 @@
       </div>
     </div>
 
-    <div id="parceiros" class="tab-content">
+    <div id="parceiros" class="tab-content" role="tabpanel">
       <h2>Parceiros</h2>
       <div class="partners-grid">
         <a href="https://casagarciafortaleza.com.br/index.php" target="_blank">
@@ -1110,18 +1079,47 @@
     <source id="audio-source" src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica1.mp3" type="audio/mpeg">
     Seu navegador não suporta o elemento de áudio.
   </audio>
-
   <audio id="hover-sound">
     <source src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/botao1.mp3" type="audio/mpeg">
     Seu navegador não suporta o elemento de áudio.
   </audio>
-
   <audio id="click-sound">
     <source src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/botao2.mp3" type="audio/mpeg">
     Seu navegador não suporta o elemento de áudio.
   </audio>
 
   <script>
+    var gk_isXlsx = false;
+    var gk_xlsxFileLookup = {};
+    var gk_fileData = {};
+    function filledCell(cell) {
+      return cell !== '' && cell != null;
+    }
+    function loadFileData(filename) {
+      if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+        try {
+          var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+          var firstSheetName = workbook.SheetNames[0];
+          var worksheet = workbook.Sheets[firstSheetName];
+          var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+          var filteredData = jsonData.filter(row => row.some(filledCell));
+          var headerRowIndex = filteredData.findIndex((row, index) =>
+            row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+          );
+          if (headerRowIndex === -1 || headerRowIndex > 25) {
+            headerRowIndex = 0;
+          }
+          var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
+          csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+          return csv;
+        } catch (e) {
+          console.error(e);
+          return "";
+        }
+      }
+      return gk_fileData[filename] || "";
+    }
+
     // Mensagem do Dia
     const messages = [
       { text: "Bem-aventurados os misericordiosos, porque alcançarão misericórdia.", cite: "São Mateus 5:7" },
@@ -1174,7 +1172,7 @@
       }
     }
 
-    // Áudio de fundo
+    // Áudio
     let volumeLevel = 0;
     const audio = document.getElementById('background-audio');
     const audioSource = document.getElementById('audio-source');
@@ -1302,30 +1300,6 @@
       console.log("Audio can play through: " + tracks[currentTrackIndex]);
     });
 
-    // Áudios dos botões
-    const hoverSound = document.getElementById('hover-sound');
-    const clickSound = document.getElementById('click-sound');
-
-    function playHoverSound() {
-      hoverSound.currentTime = 0; // Reinicia o áudio para tocar desde o início
-      hoverSound.play().then(() => {
-        console.log("Hover sound played successfully");
-      }).catch(error => {
-        console.error("Hover sound playback failed:", error);
-        alert("Não foi possível reproduzir o som de hover. Verifique a conexão ou o arquivo de áudio.");
-      });
-    }
-
-    function playClickSound() {
-      clickSound.currentTime = 0; // Reinicia o áudio para tocar desde o início
-      clickSound.play().then(() => {
-        console.log("Click sound played successfully");
-      }).catch(error => {
-        console.error("Click sound playback failed:", error);
-        alert("Não foi possível reproduzir o som de clique. Verifique a conexão ou o arquivo de áudio.");
-      });
-    }
-
     // Contador de visitas
     document.addEventListener('DOMContentLoaded', () => {
       try {
@@ -1338,6 +1312,7 @@
         document.getElementById('visit-count').textContent = 'N/A';
       }
       updateDailyMessage();
+      setupInteractionSounds();
     });
 
     // Funções para alternar abas, subabas e sub-subabas
@@ -1350,6 +1325,7 @@
       }
       for (let i = 0; i < navItems.length; i++) {
         navItems[i].classList.remove('active');
+        navItems[i].setAttribute('aria-selected', 'false');
       }
       
       const selectedTab = document.getElementById(tabName);
@@ -1360,6 +1336,7 @@
       const activeNavItem = Array.from(navItems).find(item => item.getAttribute('onclick')?.includes(tabName));
       if (activeNavItem) {
         activeNavItem.classList.add('active');
+        activeNavItem.setAttribute('aria-selected', 'true');
       }
 
       if (tabName === 'produtos') {
@@ -1427,7 +1404,7 @@
       }
       
       const selectedSubSubTab = document.getElementById(subSubTabName);
-      if (selectedSubTab) {
+      if (selectedSubSubTab) {
         selectedSubSubTab.classList.add('active');
       }
 
@@ -1470,7 +1447,41 @@
       });
     });
 
+    // Sons de interação (hover e clique)
+    const hoverSound = document.getElementById('hover-sound');
+    const clickSound = document.getElementById('click-sound');
+
+    function playHoverSound() {
+      hoverSound.currentTime = 0; // Reinicia o áudio para tocar novamente
+      hoverSound.play().catch(error => {
+        console.error("Erro ao tocar som de hover:", error);
+      });
+    }
+
+    function playClickSound() {
+      clickSound.currentTime = 0; // Reinicia o áudio para tocar novamente
+      clickSound.play().catch(error => {
+        console.error("Erro ao tocar som de clique:", error);
+      });
+    }
+
+    function setupInteractionSounds() {
+      // Selecionar todos os elementos interativos
+      const interactiveElements = document.querySelectorAll(
+        '.nav-item, .dropdown-content a, .subtab, .sub-subtab, .message-btn, .contact-item a, .download-item a, .program-item a, .partner-logo, .control-btn, .volume-icon'
+      );
+
+      interactiveElements.forEach(element => {
+        // Adicionar som ao passar o mouse
+        element.addEventListener('mouseover', playHoverSound);
+        // Adicionar som ao clicar
+        element.addEventListener('click', playClickSound);
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       openTab('home');
     });
   </script>
+</body>
+</html>
