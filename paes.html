@@ -37,45 +37,6 @@
         }
         return gk_fileData[filename] || "";
         }
-        </script><script type="text/javascript">
-        var gk_isXlsx = false;
-        var gk_xlsxFileLookup = {};
-        var gk_fileData = {};
-        function filledCell(cell) {
-          return cell !== '' && cell != null;
-        }
-        function loadFileData(filename) {
-        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-            try {
-                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-                var firstSheetName = workbook.SheetNames[0];
-                var worksheet = workbook.Sheets[firstSheetName];
-
-                // Convert sheet to JSON to filter blank rows
-                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-                // Filter out blank rows (rows where all cells are empty, null, or undefined)
-                var filteredData = jsonData.filter(row => row.some(filledCell));
-
-                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
-                var headerRowIndex = filteredData.findIndex((row, index) =>
-                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-                );
-                // Fallback
-                if (headerRowIndex === -1 || headerRowIndex > 25) {
-                  headerRowIndex = 0;
-                }
-
-                // Convert filtered JSON back to CSV
-                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
-                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-                return csv;
-            } catch (e) {
-                console.error(e);
-                return "";
-            }
-        }
-        return gk_fileData[filename] || "";
-        }
         </script><!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -102,13 +63,12 @@
       background-color: #2c2c2c;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
       border-radius: 15px;
-      overflow: hidden;
       margin: 0 auto;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
       box-sizing: border-box;
-      padding-top: 60px;
+      padding-top: 80px;
     }
     .header {
       background-color: #1e90ff;
@@ -149,17 +109,24 @@
       width: 100%;
       margin-bottom: 6px;
     }
-    .control-buttons .control-btn {
+    .control-btn {
       cursor: pointer;
       color: #ffffff;
       font-size: 1em;
       margin: 0 6px;
       transition: transform 0.1s ease;
+      background: none;
+      border: none;
+      padding: 0;
     }
-    .control-buttons .control-btn:hover {
+    .control-btn:hover {
       transform: scale(1.2);
     }
-    .control-buttons .play-pause-btn {
+    .control-btn:focus {
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
+    }
+    .play-pause-btn {
       width: 25px;
       height: 25px;
       background-color: #ffffff;
@@ -169,6 +136,7 @@
       align-items: center;
       color: #1e90ff;
       font-size: 1em;
+      border: none;
     }
     .volume-icon {
       display: flex;
@@ -182,10 +150,15 @@
       border-radius: 50%;
       transition: transform 0.2s ease, background-color 0.2s ease;
       margin-top: 8px;
+      border: none;
     }
     .volume-icon:hover {
       transform: scale(1.15);
       background-color: rgba(255, 255, 255, 0.3);
+    }
+    .volume-icon:focus {
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
     }
     .volume-icon svg {
       width: 18px;
@@ -239,34 +212,47 @@
       z-index: 1000;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
     }
-    .nav-item {
-      padding: 8px 12px;
-      background-color: #ff6f61;
+    .nav-item, .dropdown-toggle, .dropdown-content a {
+      padding: 6px 10px;
+      background: linear-gradient(135deg, #ff6f61, #e55a50);
       color: #ffffff;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
+      font-family: 'Poppins', sans-serif;
       font-weight: 600;
-      transition: background-color 0.3s ease;
+      font-size: 0.85em;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
       text-decoration: none;
-      font-size: 0.9em;
-      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      border: none;
     }
-    .nav-item:hover {
-      background-color: #ffffff;
+    .nav-item:hover, .nav-item:focus,
+    .dropdown-toggle:hover, .dropdown-toggle:focus,
+    .dropdown-content a:hover, .dropdown-content a:focus {
+      background: linear-gradient(135deg, #ffffff, #f0f0f0);
       color: #ff6f61;
+      transform: scale(1.05);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
-    .nav-item.active {
-      background-color: #ffffff;
-      color: #ff6f61;
+    .nav-item:focus, .dropdown-toggle:focus, .dropdown-content a:focus {
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
     }
     .dropdown {
       position: relative;
+    }
+    .dropdown-toggle {
+      display: inline-flex;
     }
     .dropdown-toggle::after {
       content: '▼';
       font-size: 0.8em;
       margin-left: 5px;
-      display: inline-block;
       transition: transform 0.3s ease;
     }
     .dropdown.open .dropdown-toggle::after {
@@ -281,7 +267,7 @@
       z-index: 1002;
       top: 100%;
       left: 0;
-      border-radius: 5px;
+      border-radius: 8px;
       opacity: 0;
       transform: translateY(10px);
       transition: opacity 0.3s ease, transform 0.3s ease;
@@ -293,17 +279,8 @@
     }
     .dropdown-content a {
       display: block;
-      padding: 10px 14px;
-      text-align: left;
-      cursor: pointer;
-      color: #f0f0f0;
-      text-decoration: none;
-      transition: background-color 0.3s ease;
-      font-size: 0.9em;
-    }
-    .dropdown-content a:hover {
-      background-color: #ff6f61;
-      color: #ffffff;
+      padding: 8px 12px;
+      text-align: center;
     }
     .tab-content {
       display: none;
@@ -325,16 +302,78 @@
       margin: 20px 0 10px;
       text-align: center;
     }
-    .tab-content p, .tab-content ul {
+    .tab-content p {
       font-size: 0.9em;
       line-height: 1.5;
       text-align: center;
+    }
+    .bread-styles {
+      margin: 20px auto;
+      max-width: 800px;
+      padding: 0 20px;
+    }
+    .styles-toggle-btn {
+      padding: 6px 10px;
+      background: linear-gradient(135deg, #ff6f61, #e55a50);
+      color: #ffffff;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 600;
+      font-size: 0.85em;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      border: none;
+      margin: 0 auto;
+      width: fit-content;
+    }
+    .styles-toggle-btn:hover, .styles-toggle-btn:focus {
+      background: linear-gradient(135deg, #ffffff, #f0f0f0);
+      color: #ff6f61;
+      transform: scale(1.05);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .styles-toggle-btn:focus {
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
+    }
+    .styles-toggle-btn::after {
+      content: '▼';
+      font-size: 0.8em;
+      margin-left: 5px;
+      transition: transform 0.3s ease;
+    }
+    .styles-toggle-btn[aria-expanded="true"]::after {
+      transform: rotate(180deg);
+    }
+    .bread-styles-content {
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, opacity 0.3s ease;
+      padding-top: 0;
+    }
+    .bread-styles-content.visible {
+      max-height: 400px; /* Adjust based on content height */
+      opacity: 1;
+      padding-top: 10px;
+    }
+    .bread-styles-content p {
+      font-size: 0.9em;
+      line-height: 1.5;
+      margin: 5px 0;
+      text-align: left;
     }
     .daily-message {
       font-style: italic;
       margin: 10px auto;
       max-width: 600px;
       transition: opacity 0.5s ease;
+      text-align: center;
     }
     .daily-message cite {
       display: block;
@@ -345,22 +384,27 @@
     .message-btn {
       display: block;
       margin: 15px auto;
-      padding: 10px 15px;
-      background-color: #ff6f61;
+      padding: 6px 10px;
+      background: linear-gradient(135deg, #ff6f61, #e55a50);
       color: #ffffff;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
       cursor: pointer;
+      font-family: 'Poppins', sans-serif;
       font-weight: 600;
-      font-size: 0.9em;
-      transition: background-color 0.3s ease, transform 0.2s ease, border 0.2s ease;
+      font-size: 0.85em;
+      transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+      width: fit-content;
     }
     .message-btn:hover {
-      background-color: #ffffff;
+      background: linear-gradient(135deg, #ffffff, #f0f0f0);
       color: #ff6f61;
-      transform: translateY(-2px);
-      border: 1px solid #00ffcc;
-      box-shadow: 0 0 8px #00ffcc;
+      transform: scale(1.05);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    .message-btn:focus {
+      outline: 2px solid #ffffff;
+      outline-offset: 2px;
     }
     .visitor-counter {
       text-align: center;
@@ -382,15 +426,15 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 15px;
+      gap: 20px;
       margin: 20px 0;
     }
     .product-card {
       background-color: #252525;
       border-radius: 10px;
       padding: 10px;
-      width: calc(33.33% - 15px); /* 3 colunas com gap */
-      max-width: 170px; /* Espaço para a imagem 150x150 + padding */
+      width: calc(33.33% - 20px);
+      max-width: 180px;
       text-align: center;
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       box-sizing: border-box;
@@ -401,23 +445,19 @@
       width: 150px;
       height: 150px;
       margin: 0 auto;
+      overflow: hidden;
+      border-radius: 5px;
     }
     .product-card img {
-      width: 150px;
-      height: 150px;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
       border-radius: 5px;
       display: block;
-      transition: all 0.3s ease;
+      transition: transform 0.3s ease;
     }
     .product-card:hover img {
-      width: 400px;
-      height: 400px;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 10;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+      transform: scale(1.2);
     }
     .product-card h4 {
       color: #ff6f61;
@@ -436,7 +476,7 @@
     }
     @media (min-width: 768px) {
       .product-card {
-        width: calc(20% - 15px); /* Ajusta para mais colunas em telas maiores */
+        width: calc(20% - 20px);
         max-width: 200px;
       }
       .product-card h4 {
@@ -451,8 +491,7 @@
         width: 100%;
         margin: 0;
         border-radius: 0;
-        min-height: 100vh;
-        padding-top: 80px;
+        padding-top: 100px;
       }
       .header {
         padding: 15px 100px 15px 15px;
@@ -465,19 +504,14 @@
         font-size: 0.8em;
       }
       .audio-controls {
-        top: 5px;
-        right: 5px;
         width: 100px;
         padding: 4px 6px;
       }
-      .control-buttons {
-        margin-bottom: 4px;
-      }
-      .control-buttons .control-btn {
+      .control-btn {
         font-size: 0.9em;
         margin: 0 4px;
       }
-      .control-buttons .play-pause-btn {
+      .play-pause-btn {
         width: 20px;
         height: 20px;
         font-size: 0.9em;
@@ -495,40 +529,38 @@
         height: 10px;
       }
       .waveform .bar {
-        width thrive: 1.5px;
+        width: 1.5px;
       }
       .nav-menu {
-        flex-direction: row;
-        flex-wrap: wrap;
-        justify-content: center;
         padding: 8px;
         gap: 6px;
       }
-      .nav-item {
-        padding: 6px 10px;
-        font-size: 0.8em;
-        flex: 1 1 auto;
-        text-align: center;
+      .nav-item, .dropdown-toggle, .dropdown-content a, .styles-toggle-btn {
+        padding: 5px 8px;
+        font-size: 0.75em;
       }
       .dropdown-content {
         width: 100%;
         min-width: 0;
-        left: 0;
-        background-color: #3a3a3a;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
-        z-index: 1002;
-        border-radius: 0 0 5px 5px;
+        border-radius: 0 0 8px 8px;
       }
       .dropdown-content a {
-        font-size: 0.8em;
-        padding: 8px 12px;
+        padding: 6px 10px;
         text-align: center;
       }
       .tab-content {
         padding: 15px;
         margin: 5px;
-        min-height: calc(100vh - 200px);
-        overflow-y: auto;
+      }
+      .bread-styles {
+        padding: 0 15px;
+      }
+      .styles-toggle-btn {
+        padding: 5px 8px;
+        font-size: 0.75em;
+      }
+      .bread-styles-content p {
+        font-size: 0.8em;
       }
       .daily-message {
         font-size: 0.8em;
@@ -537,8 +569,8 @@
         font-size: 0.7em;
       }
       .message-btn {
-        padding: 8px 12px;
-        font-size: 0.8em;
+        padding: 5px 8px;
+        font-size: 0.75em;
       }
       .visitor-counter {
         max-width: 200px;
@@ -547,27 +579,29 @@
       .visitor-counter span {
         font-size: 1em;
       }
+      .product-gallery {
+        gap: 15px;
+      }
       .product-card {
-        width: calc(33.33% - 15px); /* Mantém 3 colunas no celular */
+        width: calc(50% - 15px);
         max-width: 150px;
       }
       .product-card:hover img {
-        width: 300px; /* Reduz o zoom em smartphones para evitar overflow */
-        height: 300px;
+        transform: scale(1.1);
       }
     }
   </style>
 </head>
-<body onclick="handleFirstClick()">
+<body>
   <div class="container">
     <div class="header">
       <h1>Fábrica Vita Gula</h1>
       <p>Sabor, Tradição e Qualidade Desde 2001</p>
       <div class="audio-controls" role="region" aria-label="Controles de áudio">
         <div class="control-buttons">
-          <span class="control-btn" id="prev-btn" onclick="playClickSound(); playPrevious()" onmouseover="playHoverSound()" aria-label="Tocar faixa anterior">⏮</span>
-          <span class="control-btn play-pause-btn" id="play-pause-btn" onclick="playClickSound(); togglePlayPause()" onmouseover="playHoverSound()" aria-label="Tocar ou pausar">▶</span>
-          <span class="control-btn" id="next-btn" onclick="playClickSound(); playNext()" onmouseover="playHoverSound()" aria-label="Tocar próxima faixa">⏭</span>
+          <button class="control-btn" id="prev-btn" aria-label="Tocar faixa anterior">⏮</button>
+          <button class="control-btn play-pause-btn" id="play-pause-btn" aria-label="Tocar ou pausar">▶</button>
+          <button class="control-btn" id="next-btn" aria-label="Tocar próxima faixa">⏭</button>
         </div>
         <div class="waveform" id="waveform">
           <div class="bar"></div>
@@ -579,7 +613,7 @@
           <div class="bar"></div>
           <div class="bar"></div>
         </div>
-        <span class="volume-icon low" id="volume-icon" onclick="playClickSound(); changeVolume()" onmouseover="playHoverSound()" aria-label="Ajustar volume">
+        <button class="volume-icon low" id="volume-icon" aria-label="Ajustar volume">
           <svg class="volume-mute" viewBox="0 0 24 24" style="display: none;">
             <path d="M3 9v6h4l5 5V4L7 9H3zm11 0l3.5 3.5L14 15V9zm5.5 3l-2.5-2.5L19.5 7l2.5 2.5L19.5 12z"/>
           </svg>
@@ -592,146 +626,147 @@
           <svg class="volume-high" viewBox="0 0 24 24" style="display: none;">
             <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
           </svg>
-        </span>
+        </button>
       </div>
     </div>
-    <div class="nav-menu" role="navigation" aria-label="Menu principal">
-      <a class="nav-item" href="https://gvitagula.github.io/site/" onclick="playClickSound()" onmouseover="playHoverSound()" role="tab" aria-selected="false">Página Principal</a>
-      <a class="nav-item" href="https://gvitagula.github.io/site/quemsomos" onclick="playClickSound()" onmouseover="playHoverSound()" role="tab" aria-selected="false">Quem Somos</a>
-      <div class="nav-item dropdown" onclick="playClickSound(); toggleDropdown(event, 'produtos')" onmouseover="playHoverSound()" role="tab" aria-selected="false">
-        <span class="dropdown-toggle">Produtos</span>
+    <nav class="nav-menu" role="navigation" aria-label="Menu principal">
+      <a class="nav-item" href="index.html" role="tab" aria-selected="false">Página Principal</a>
+      <a class="nav-item" href="quemsomos.html" role="tab" aria-selected="false">Quem Somos</a>
+      <div class="nav-item dropdown" role="tab" aria-selected="false">
+        <button class="dropdown-toggle" aria-expanded="false">Produtos</button>
         <div class="dropdown-content">
-          <a href="https://gvitagula.github.io/site/paes" onclick="playClickSound()" onmouseover="playHoverSound()" role="menuitem" class="active">Pães</a>
-          <a href="https://gvitagula.github.io/site/biscoitos" onclick="playClickSound()" onmouseover="playHoverSound()" role="menuitem">Biscoitos</a>
-          <a href="https://gvitagula.github.io/site/bolos" onclick="playClickSound()" onmouseover="playHoverSound()" role="menuitem">Bolos</a>
-          <a href="https://gvitagula.github.io/site/outros" onclick="playClickSound()" onmouseover="playHoverSound()" role="menuitem">Outros Produtos</a>
-          <a href="https://gvitagula.github.io/site/precos" onclick="playClickSound()" onmouseover="playHoverSound()" role="menuitem">Preços</a>
+          <a href="paes.html" role="menuitem">Pães</a>
+          <a href="biscoitos.html" role="menuitem">Biscoitos</a>
+          <a href="bolos.html" role="menuitem">Bolos</a>
+          <a href="outros.html" role="menuitem">Outros Produtos</a>
+          <a href="precos.html" role="menuitem">Preços</a>
         </div>
       </div>
-      <a class="nav-item" href="https://gvitagula.github.io/site/contatos" onclick="playClickSound()" onmouseover="playHoverSound()" role="tab" aria-selected="false">Contatos</a>
-      <div class="nav-item dropdown" onclick="playClickSound(); toggleDropdown(event, 'downloads')" onmouseover="playHoverSound()" role="tab" aria-selected="false">
-        <span class="dropdown-toggle">Downloads</span>
+      <a class="nav-item" href="contatos.html" role="tab" aria-selected="false">Contatos</a>
+      <div class="nav-item dropdown" role="tab" aria-selected="false">
+        <button class="dropdown-toggle" aria-expanded="false">Downloads</button>
         <div class="dropdown-content">
-          <a href="https://gvitagula.github.io/site/texto" onclick="playClickSound()" onmouseover="playHoverSound()" role="menuitem">Texto</a>
-          <a href="https://gvitagula.github.io/site/imagens" onclick="playClickSound()" onmouseover="playHoverSound()" role="menuitem">Imagens</a>
-          <a href="https://gvitagula.github.io/site/audios" onclick="playClickSound()" onmouseover="playHoverSound()" role="menuitem">Áudios</a>
-          <a href="https://gvitagula.github.io/site/videos" onclick="playClickSound()" onmouseover="playHoverSound()" role="menuitem">Vídeos</a>
-          <a href="https://gvitagula.github.io/site/programas" onclick="playClickSound()" onmouseover="playHoverSound()" role="menuitem">Programas</a>
+          <a href="texto.html" role="menuitem">Texto</a>
+          <a href="imagens.html" role="menuitem">Imagens</a>
+          <a href="audios.html" role="menuitem">Áudios</a>
+          <a href="videos.html" role="menuitem">Vídeos</a>
+          <a href="programas.html" role="menuitem">Programas</a>
         </div>
       </div>
-      <a class="nav-item" href="https://gvitagula.github.io/site/parceiros" onclick="playClickSound()" onmouseover="playHoverSound()" role="tab" aria-selected="false">Parceiros</a>
-    </div>
-
+      <a class="nav-item" href="parceiros.html" role="tab" aria-selected="false">Parceiros</a>
+    </nav>
     <div id="paes" class="tab-content active" role="tabpanel">
       <h3>Nossos Pães</h3>
-      <p>Descubra a tradição e o sabor dos nossos pães artesanais, feitos com ingredientes selecionados e assados com carinho. Confira alguns de nossos destaques:</p>
+      <p>Descubra a tradição e o sabor dos nossos pães artesanais, feitos com ingredientes selecionados e assados com carinho.</p>
+      <div class="bread-styles">
+        <button class="styles-toggle-btn" aria-expanded="false">Estilos dos Nossos Pães</button>
+        <div class="bread-styles-content">
+          <p><strong>Pães para Sanduíches:</strong> Perfeitos para lanches rápidos, como Hambúrguer, Hotdog, Hamburgao, PicNic e Pão Árabe, com texturas macias e sabores versáteis.</p>
+          <p><strong>Pães Brioche:</strong> Ricos e amanteigados, os pães Hambúrguer Brioche, Mini Hambúrguer Brioche, Brochinho e Forma Brioche são ideais para combinações gourmet ou doces.</p>
+          <p><strong>Pães Integrais:</strong> Saudáveis e nutritivos, como Forma Integral e PicNic Integral, oferecem fibras e sabor para uma alimentação equilibrada.</p>
+          <p><strong>Pães Clássicos:</strong> Tradicionais e versáteis, como Forma e Leite, são perfeitos para o dia a dia, seja no café da manhã ou em sanduíches.</p>
+        </div>
+      </div>
+      <div id="daily-message" class="daily-message"></div>
+      <button class="message-btn" id="next-message-btn">Próxima Mensagem</button>
       <div class="product-gallery">
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/01-hamburguer.jpg" alt="Pão de Hambúrguer">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/01-Humburguer.jpg" alt="Pão de Hambúrguer" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/150?text=Imagem+Indisponível';">
           </div>
           <h4>Pão de Hambúrguer</h4>
-          <p>Macio e levemente adocicado, ideal para o seu hambúrguer caseiro.</p>
+          <p>Macio e levemente adocicado, ideal para hambúrgueres caseiros.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/02-Hotdog.jpg" alt="Pão de Hot Dog">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/02-Hotdog.jpg" alt="Pão de Hot Dog" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/150?text=Imagem+Indisponível';">
           </div>
           <h4>Pão de Hot Dog</h4>
-          <p>Perfeito para um lanche rápido, com textura fofa e sabor único.</p>
+          <p>Fofinho e saboroso, perfeito para lanches rápidos.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/03-Frances.jpg" alt="Pão Francês">
-          </div>
-          <h4>Pão Francês</h4>
-          <p>Crocante por fora, macio por dentro. Perfeito para o café da manhã!</p>
-        </div>
-        <div class="product-card">
-          <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/04-Integral.jpg" alt="Pão Integral">
-          </div>
-          <h4>Pão Integral</h4>
-          <p>Saudável e saboroso, rico em fibras e nutrientes naturais.</p>
-        </div>
-        <div class="product-card">
-          <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/05-Milho.jpg" alt="Pão de Milho">
-          </div>
-          <h4>Pão de Milho</h4>
-          <p>Um toque especial de milho, ideal para acompanhar pratos típicos.</p>
-        </div>
-        <div class="product-card">
-          <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/06-Caseiro.jpg" alt="Pão Caseiro">
-          </div>
-          <h4>Pão Caseiro</h4>
-          <p>Feito como na casa da vovó, com sabor nostálgico e autêntico.</p>
-        </div>
-        <div class="product-card">
-          <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/07-Forma.jpg" alt="Pão de Forma">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/03-Forma.jpg" alt="Pão de Forma" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/150?text=Imagem+Indisponível';">
           </div>
           <h4>Pão de Forma</h4>
           <p>Versátil e macio, ideal para sanduíches e torradas.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/08-Australiano.jpg" alt="Pão Australiano">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/04-Leite.jpg" alt="Pão de Leite" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/150?text=Imagem+Indisponível';">
           </div>
-          <h4>Pão Australiano</h4>
-          <p>Escuro e levemente doce, perfeito para combinar com manteiga.</p>
+          <h4>Pão de Leite</h4>
+          <p>Doce e fofinho, perfeito para o café da manhã.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/09-Ciabatta.jpg" alt="Pão Ciabatta">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/05-Forma_integral.jpg" alt="Pão de Forma Integral" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/150?text=Imagem+Indisponível';">
           </div>
-          <h4>Pão Ciabatta</h4>
-          <p>Com casca crocante e miolo macio, ideal para sanduíches gourmet.</p>
+          <h4>Pão de Forma Integral</h4>
+          <p>Saudável e rico em fibras, ideal para dietas equilibradas.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/10-Sourdough.jpg" alt="Pão Sourdough">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/06-Hamburgao.jpg" alt="Hamburgao" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/150?text=Imagem+Indisponível';">
           </div>
-          <h4>Pão Sourdough</h4>
-          <p>Fermentação natural, com sabor rústico e textura única.</p>
+          <h4>Hamburgao</h4>
+          <p>Grande e robusto, perfeito para hambúrgueres generosos.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/11-Brioche.jpg" alt="Pão Brioche">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/07-PicNic.jpg" alt="Pão PicNic" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/150?text=Imagem+Indisponível';">
           </div>
-          <h4>Pão Brioche</h4>
-          <p>Doce e amanteigado, perfeito para lanches sofisticados.</p>
+          <h4>Pão PicNic</h4>
+          <p>Leve e macio, ideal para lanches ao ar livre.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/12-Placeholder.jpg" alt="Pão Placeholder 12">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/08-PicNicIntegral.jpg" alt="Pão PicNic Integral" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/150?text=Imagem+Indisponível';">
           </div>
-          <h4>Pão Placeholder 12</h4>
-          <p>Descrição a ser adicionada.</p>
+          <h4>Pão PicNic Integral</h4>
+          <p>Nutritivo e leve, perfeito para lanches saudáveis.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/13-Placeholder.jpg" alt="Pão Placeholder 13">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/09-HamburguerBrioche.jpg" alt="Hambúrguer Brioche" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/150?text=Imagem+Indisponível';">
           </div>
-          <h4>Pão Placeholder 13</h4>
-          <p>Descrição a ser adicionada.</p>
+          <h4>Hambúrguer Brioche</h4>
+          <p>Rico e amanteigado, ideal para hambúrgueres gourmet.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/14-Placeholder.jpg" alt="Pão Placeholder 14">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/10-MiniHamburguerBrioche.jpg" alt="Mini Hambúrguer Brioche" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/150?text=Imagem+Indisponível';">
           </div>
-          <h4>Pão Placeholder 14</h4>
-          <p>Descrição a ser adicionada.</p>
+          <h4>Mini Hambúrguer Brioche</h4>
+          <p>Pequeno e sofisticado, perfeito para petiscos.</p>
+        </div>
+        <div class="product-card">
+          <div class="image-wrapper">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/11Briochinho.jpg" alt="Briochinho" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/150?text=Imagem+Indisponível';">
+          </div>
+          <h4>Briochinho</h4>
+          <p>Brioche em formato pequeno, ideal para lanches doces.</p>
+        </div>
+        <div class="product-card">
+          <div class="image-wrapper">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/12FormaBrioche.jpg" alt="Forma Brioche" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/150?text=Imagem+Indisponível';">
+          </div>
+          <h4>Forma Brioche</h4>
+          <p>Brioche macio, perfeito para sanduíches sofisticados.</p>
+        </div>
+        <div class="product-card">
+          <div class="image-wrapper">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/14-PaoArabe.jpg" alt="Pão Árabe" loading="lazy" decoding="async" onerror="this.src='https://via.placeholder.com/150?text=Imagem+Indisponível';">
+          </div>
+          <h4>Pão Árabe</h4>
+          <p>Leve e com bolso, ideal para recheios variados.</p>
         </div>
       </div>
     </div>
-
     <div class="visitor-counter">
       Visitas: <span id="visit-count">0</span>
     </div>
   </div>
-
   <audio id="background-audio">
     <source id="audio-source" src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica1.mp3" type="audio/mpeg">
     Seu navegador não suporta o elemento de áudio.
@@ -740,13 +775,8 @@
     <source src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/botao1.mp3" type="audio/mpeg">
     Seu navegador não suporta o elemento de áudio.
   </audio>
-  <audio id="click-sound">
-    <source src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/botao2.mp3" type="audio/mpeg">
-    Seu navegador não suporta o elemento de áudio.
-  </audio>
-
   <script>
-    // Mensagem do Dia
+    // Daily Message
     const messages = [
       { text: "Bem-aventurados os misericordiosos, porque alcançarão misericórdia.", cite: "São Mateus 5:7" },
       { text: "Ama e faze o que quiseres.", cite: "Santo Agostinho" },
@@ -762,17 +792,14 @@
 
     function updateDailyMessage() {
       try {
-        const now = new Date();
         const today = new Date().toDateString();
-        let messageIndex = parseInt(localStorage.getItem('messageIndex')) || 0;
+        let messageIndex = parseInt(localStorage.getItem('messageIndex') || '0');
         let lastUpdate = localStorage.getItem('lastMessageUpdate');
-
         if (lastUpdate !== today) {
           messageIndex = (messageIndex + 1) % messages.length;
           localStorage.setItem('messageIndex', messageIndex);
           localStorage.setItem('lastMessageUpdate', today);
         }
-
         const message = messages[messageIndex];
         const messageElement = document.getElementById('daily-message');
         messageElement.style.opacity = '0';
@@ -781,109 +808,103 @@
           messageElement.style.opacity = '1';
         }, 200);
       } catch (e) {
-        console.error('Erro ao atualizar mensagem:', e);
-        document.getElementById('daily-message').innerHTML = 'Mensagem indisponível no momento.<cite>Erro</cite>';
+        console.error('Error updating message:', e);
+        document.getElementById('daily-message').innerHTML = 'Mensagem indisponível.<cite>Erro</cite>';
       }
     }
 
-    function nextMessage() {
+    function debounce(fn, delay) {
+      let timeout;
+      return (...args) => {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => fn(...args), delay);
+      };
+    }
+
+    const nextMessage = debounce(() => {
       try {
-        let messageIndex = parseInt(localStorage.getItem('messageIndex')) || 0;
+        let messageIndex = parseInt(localStorage.getItem('messageIndex') || '0');
         messageIndex = (messageIndex + 1) % messages.length;
         localStorage.setItem('messageIndex', messageIndex);
         localStorage.setItem('lastMessageUpdate', new Date().toDateString());
         updateDailyMessage();
       } catch (e) {
-        console.error('Erro ao mudar mensagem:', e);
+        console.error('Error changing message:', e);
       }
-    }
+    }, 300);
 
-    // Contador de visitas
+    // Visitor Counter
     function updateVisitCount() {
       try {
-        let visitCount = localStorage.getItem('visitCount') || 0;
-        visitCount = parseInt(visitCount) + 1;
+        let visitCount = parseInt(localStorage.getItem('visitCount') || '0') + 1;
         localStorage.setItem('visitCount', visitCount);
         document.getElementById('visit-count').textContent = visitCount;
       } catch (e) {
-        console.error('Erro no contador de visitas:', e);
+        console.error('Error updating visit count:', e);
         document.getElementById('visit-count').textContent = 'N/A';
       }
     }
 
-    // Áudio
-    let volumeLevel = 0;
+    // Audio Controls
     const audio = document.getElementById('background-audio');
-    const audioSource = document.getElementById('audio-source');
     const waveform = document.getElementById('waveform');
     const hoverSound = document.getElementById('hover-sound');
-    const clickSound = document.getElementById('click-sound');
-    let isPlaying = false;
-    let hasClicked = false;
+    const playPauseBtn = document.getElementById('play-pause-btn');
     const tracks = [
-      "https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica1.mp3",
-      "https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica2.mp3",
-      "https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica3.mp3"
+      'https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica1.mp3',
+      'https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica2.mp3',
+      'https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica3.mp3'
     ];
     let currentTrackIndex = 0;
+    let isPlaying = false;
+    let hasInteracted = false;
+    let volumeLevel = 0;
 
-    function handleFirstClick() {
-      if (!hasClicked) {
-        togglePlayPause();
-        hasClicked = true;
+    function handleFirstInteraction() {
+      if (!hasInteracted) {
+        hasInteracted = true;
+        document.body.removeEventListener('click', handleFirstInteraction);
+        document.body.removeEventListener('keydown', handleFirstInteraction);
       }
     }
 
-    function playHoverSound() {
-      hoverSound.currentTime = 0;
-      hoverSound.play().catch(error => {
-        console.error("Hover sound playback failed:", error);
-      });
-    }
-
-    function playClickSound() {
-      clickSound.currentTime = 0;
-      clickSound.play().catch(error => {
-        console.error("Click sound playback failed:", error);
-      });
-    }
+    const playHoverSound = debounce(() => {
+      if (hasInteracted) {
+        hoverSound.currentTime = 0;
+        hoverSound.play().catch(error => console.error('Hover sound playback failed:', error));
+      }
+    }, 100);
 
     function changeVolume() {
       volumeLevel = (volumeLevel + 1) % 4;
       const volumeIcon = document.getElementById('volume-icon');
-      const muteIcon = volumeIcon.querySelector('.volume-mute');
-      const lowIcon = volumeIcon.querySelector('.volume-low');
-      const mediumIcon = volumeIcon.querySelector('.volume-medium');
-      const highIcon = volumeIcon.querySelector('.volume-high');
+      const icons = {
+        mute: volumeIcon.querySelector('.volume-mute'),
+        low: volumeIcon.querySelector('.volume-low'),
+        medium: volumeIcon.querySelector('.volume-medium'),
+        high: volumeIcon.querySelector('.volume-high')
+      };
       volumeIcon.classList.remove('mute', 'low', 'medium', 'high');
-      muteIcon.style.display = 'none';
-      lowIcon.style.display = 'none';
-      mediumIcon.style.display = 'none';
-      highIcon.style.display = 'none';
-      if (volumeLevel === 0) {
-        volumeIcon.classList.add('low');
-        lowIcon.style.display = 'block';
-        audio.volume = 0.3;
-      } else if (volumeLevel === 1) {
-        volumeIcon.classList.add('medium');
-        mediumIcon.style.display = 'block';
-        audio.volume = 0.6;
-      } else if (volumeLevel === 2) {
-        volumeIcon.classList.add('high');
-        highIcon.style.display = 'block';
-        audio.volume = 1.0;
-      } else {
-        volumeIcon.classList.add('mute');
-        muteIcon.style.display = 'block';
-        audio.volume = 0.0;
-      }
+      Object.values(icons).forEach(icon => icon.style.display = 'none');
+      const levels = [
+        { class: 'low', icon: icons.low, volume: 0.3 },
+        { class: 'medium', icon: icons.medium, volume: 0.6 },
+        { class: 'high', icon: icons.high, volume: 1.0 },
+        { class: 'mute', icon: icons.mute, volume: 0.0 }
+      ];
+      const { class: cls, icon, volume } = levels[volumeLevel];
+      volumeIcon.classList.add(cls);
+      icon.style.display = 'block';
+      audio.volume = volume;
     }
 
     function togglePlayPause() {
-      const playPauseBtn = document.getElementById('play-pause-btn');
+      if (!hasInteracted) {
+        alert('Por favor, interaja com a página (clique ou pressione uma tecla) para ativar o áudio.');
+        return;
+      }
       if (isPlaying) {
         audio.pause();
-        audio.currentTime = 0;
         playPauseBtn.innerHTML = '▶';
         waveform.classList.remove('playing');
         isPlaying = false;
@@ -893,13 +914,12 @@
           audio.load();
         }
         audio.play().then(() => {
-          console.log("Audio playing successfully: " + tracks[currentTrackIndex]);
           playPauseBtn.innerHTML = '⏸';
           waveform.classList.add('playing');
           isPlaying = true;
         }).catch(error => {
-          console.error("Audio playback failed:", error);
-          alert("Não foi possível reproduzir o áudio. Verifique a conexão ou o arquivo de áudio: " + tracks[currentTrackIndex]);
+          console.error('Audio playback failed:', error);
+          alert('Não foi possível reproduzir o áudio. Verifique a conexão ou o arquivo.');
         });
       }
     }
@@ -914,128 +934,167 @@
     }
 
     async function playPrevious() {
+      if (!hasInteracted) {
+        alert('Por favor, interaja com a página para ativar o áudio.');
+        return;
+      }
       const newIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
       try {
         await playTrack(newIndex);
         if (isPlaying) {
           audio.play().then(() => {
-            console.log("Previous track playing: " + tracks[newIndex]);
             currentTrackIndex = newIndex;
             waveform.classList.add('playing');
+            playPauseBtn.innerHTML = '⏸';
           }).catch(error => {
-            console.error("Audio playback failed:", error);
-            alert("Não foi possível reproduzir o áudio anterior. Repetindo a música atual: " + tracks[currentTrackIndex]);
-            playTrack(currentTrackIndex); // Tenta repetir a atual
+            console.error('Audio playback failed:', error);
+            alert('Não foi possível reproduzir o áudio anterior.');
           });
         } else {
           currentTrackIndex = newIndex;
         }
       } catch (error) {
-        console.error("Failed to load previous track, repeating current:", error);
-        alert("Não foi possível carregar o áudio anterior. Repetindo a música atual: " + tracks[currentTrackIndex]);
-        playTrack(currentTrackIndex); // Tenta repetir a atual
+        console.error('Failed to load previous track:', error);
+        alert('Não foi possível carregar o áudio anterior.');
       }
     }
 
     async function playNext() {
+      if (!hasInteracted) {
+        alert('Por favor, interaja com a página para ativar o áudio.');
+        return;
+      }
       const newIndex = (currentTrackIndex + 1) % tracks.length;
       try {
         await playTrack(newIndex);
         if (isPlaying) {
           audio.play().then(() => {
-            console.log("Next track playing: " + tracks[newIndex]);
             currentTrackIndex = newIndex;
             waveform.classList.add('playing');
+            playPauseBtn.innerHTML = '⏸';
             if (newIndex === 0) {
-              console.log("Voltando para a primeira música: musica1.mp3");
+              console.log('Voltando para a primeira música: musica1.mp3');
             }
           }).catch(error => {
-            console.error("Audio playback failed:", error);
-            alert("Não foi possível reproduzir o próximo áudio. Trocando para a primeira música: musica1.mp3");
-            playTrack(0).then(() => {
-              currentTrackIndex = 0;
-              if (isPlaying) {
-                audio.play();
-                waveform.classList.add('playing');
-              }
-            }).catch(() => {
-              console.error("Failed to load first track:", error);
-              alert("Não foi possível carregar a primeira música. Repetindo a música atual: " + tracks[currentTrackIndex]);
-              playTrack(currentTrackIndex);
-            });
+            console.error('Audio playback failed:', error);
+            alert('Não foi possível reproduzir o próximo áudio.');
           });
         } else {
           currentTrackIndex = newIndex;
         }
       } catch (error) {
-        console.error("Failed to load next track:", error);
-        alert("Não foi possível carregar o próximo áudio. Trocando para a primeira música: musica1.mp3");
-        playTrack(0).then(() => {
-          currentTrackIndex = 0;
-          if (isPlaying) {
-            audio.play();
-            waveform.classList.add('playing');
-          }
-        }).catch(() => {
-          console.error("Failed to load first track:", error);
-          alert("Não foi possível carregar a primeira música. Repetindo a música atual: " + tracks[currentTrackIndex]);
-          playTrack(currentTrackIndex);
-        });
+        console.error('Failed to load next track:', error);
+        alert('Não foi possível carregar o próximo áudio.');
       }
     }
 
-    audio.addEventListener('ended', () => {
-      playNext();
-    });
-
-    audio.volume = 0.3;
-    audio.src = tracks[currentTrackIndex];
-    audio.load();
-
-    audio.addEventListener('error', (e) => {
-      console.error("Audio load error:", e);
-      alert("Erro ao carregar o áudio. Verifique se o arquivo está acessível: " + tracks[currentTrackIndex]);
-    });
-
-    audio.addEventListener('loadeddata', () => {
-      console.log("Audio loaded successfully: " + tracks[currentTrackIndex]);
-    });
-
-    audio.addEventListener('canplaythrough', () => {
-      console.log("Audio can play through: " + tracks[currentTrackIndex]);
-    });
-
-    // Funções para alternar abas
-    function toggleDropdown(event, tabName) {
+    // Dropdown Menu
+    function toggleDropdown(event, dropdown) {
       event.preventDefault();
       event.stopPropagation();
-      const dropdown = event.currentTarget;
       const isOpen = dropdown.classList.contains('open');
-      
-      const allDropdowns = document.querySelectorAll('.dropdown');
-      allDropdowns.forEach(d => {
-        if (d !== dropdown) {
-          d.classList.remove('open');
-        }
+      document.querySelectorAll('.dropdown').forEach(d => {
+        d.classList.remove('open');
+        d.querySelector('.dropdown-toggle').setAttribute('aria-expanded', 'false');
       });
-
-      dropdown.classList.toggle('open');
+      if (!isOpen) {
+        dropdown.classList.add('open');
+        dropdown.querySelector('.dropdown-toggle').setAttribute('aria-expanded', 'true');
+      }
     }
 
-    document.addEventListener('click', (event) => {
+    function closeAllDropdowns(event) {
       const dropdowns = document.querySelectorAll('.dropdown');
       dropdowns.forEach(dropdown => {
         if (!dropdown.contains(event.target)) {
           dropdown.classList.remove('open');
+          dropdown.querySelector('.dropdown-toggle').setAttribute('aria-expanded', 'false');
         }
+      });
+    }
+
+    // Bread Styles Toggle
+    function toggleStyles(event) {
+      const btn = event.currentTarget;
+      const content = document.querySelector('.bread-styles-content');
+      const isExpanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', !isExpanded);
+      content.classList.toggle('visible', !isExpanded);
+    }
+
+    // Keyboard Navigation
+    function handleDropdownKeydown(event, dropdown) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleDropdown(event, dropdown);
+      }
+    }
+
+    function handleStylesKeydown(event) {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        toggleStyles(event);
+      }
+    }
+
+    // Event Listeners
+    document.addEventListener('click', closeAllDropdowns);
+    document.body.addEventListener('click', handleFirstInteraction);
+    document.body.addEventListener('keydown', handleFirstInteraction);
+    audio.addEventListener('ended', playNext);
+    audio.addEventListener('error', () => alert('Erro ao carregar o áudio. Verifique se o arquivo está acessível.'));
+    audio.addEventListener('loadeddata', () => console.log(`Audio loaded: ${tracks[currentTrackIndex]}`));
+    audio.addEventListener('canplaythrough', () => console.log(`Audio can play through: ${tracks[currentTrackIndex]}`));
+
+    // Initialize Audio
+    audio.volume = 0.3;
+    audio.src = tracks[currentTrackIndex];
+    audio.load();
+
+    // Initialize Navigation
+    document.querySelectorAll('.nav-item:not(.dropdown)').forEach(item => {
+      item.addEventListener('mouseover', playHoverSound);
+      item.addEventListener('click', () => window.location.href = item.href);
+    });
+
+    document.querySelectorAll('.dropdown').forEach(dropdown => {
+      const toggle = dropdown.querySelector('.dropdown-toggle');
+      toggle.addEventListener('click', event => toggleDropdown(event, dropdown));
+      toggle.addEventListener('keydown', event => handleDropdownKeydown(event, dropdown));
+      toggle.addEventListener('mouseover', playHoverSound);
+      dropdown.querySelectorAll('.dropdown-content a').forEach(link => {
+        link.addEventListener('mouseover', playHoverSound);
       });
     });
 
-    // Inicialização
+    // Initialize Audio Controls
+    document.getElementById('prev-btn').addEventListener('click', playPrevious);
+    document.getElementById('prev-btn').addEventListener('mouseover', playHoverSound);
+    document.getElementById('play-pause-btn').addEventListener('click', togglePlayPause);
+    document.getElementById('play-pause-btn').addEventListener('mouseover', playHoverSound);
+    document.getElementById('next-btn').addEventListener('click', playNext);
+    document.getElementById('next-btn').addEventListener('mouseover', playHoverSound);
+    document.getElementById('volume-icon').addEventListener('click', changeVolume);
+    document.getElementById('volume-icon').addEventListener('mouseover', playHoverSound);
+
+    // Initialize Message Button
+    document.getElementById('next-message-btn').addEventListener('click', nextMessage);
+    document.getElementById('next-message-btn').addEventListener('mouseover', playHoverSound);
+
+    // Initialize Bread Styles Toggle
+    const stylesToggleBtn = document.querySelector('.styles-toggle-btn');
+    stylesToggleBtn.addEventListener('click', toggleStyles);
+    stylesToggleBtn.addEventListener('keydown', handleStylesKeydown);
+    stylesToggleBtn.addEventListener('mouseover', playHoverSound);
+
+    // Initialize on Load
     document.addEventListener('DOMContentLoaded', () => {
       updateVisitCount();
       updateDailyMessage();
+      // Ensure volume icon is correctly initialized
+      document.getElementById('volume-icon').classList.add('low');
+      document.querySelector('.volume-low').style.display = 'block';
     });
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93c1b9b10ae6bf9b',t:'MTc0NjYzMTQ3OC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</body>
 </html>
