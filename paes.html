@@ -69,7 +69,7 @@
       flex-direction: column;
       min-height: 100vh;
       box-sizing: border-box;
-      padding-top: 170px;
+      padding-top: 170px; /* Ajustado para header (120px) + nav-menu (50px) */
     }
     .header {
       background-color: #1e90ff;
@@ -86,7 +86,7 @@
       flex-direction: row;
       justify-content: flex-start;
       align-items: center;
-      height: 120px;
+      height: 120px; /* Altura fixa para desktop */
       z-index: 1001;
     }
     .header h1 {
@@ -207,7 +207,7 @@
       flex-wrap: wrap;
       gap: 8px;
       position: fixed;
-      top: 120px;
+      top: 120px; /* Ajustado para ficar logo abaixo do header */
       width: 100%;
       max-width: 1200px;
       z-index: 1000;
@@ -338,7 +338,7 @@
       transform: translate(-50%, -50%);
       width: 400px;
       height: 400px;
-      z-index: 10000;
+      z-index: 10000; /* Por cima de tudo */
       box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
     }
     .product-card h4 {
@@ -350,32 +350,6 @@
       font-size: 0.75em;
       color: #ccc;
       margin: 0;
-    }
-    .show-more-btn {
-      display: block;
-      margin: 20px auto;
-      padding: 10px 20px;
-      background-color: #ff6f61;
-      color: #ffffff;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      font-size: 0.9em;
-      font-weight: 600;
-      transition: background-color 0.3s ease, transform 0.1s ease;
-    }
-    .show-more-btn:hover {
-      background-color: #ffffff;
-      color: #ff6f61;
-      transform: scale(1.05);
-    }
-    .hidden-content {
-      display: none;
-      font-size: 0.9em;
-      line-height: 1.5;
-      text-align: center;
-      color: #f0f0f0;
-      margin-top: 20px;
     }
     @media (min-width: 768px) {
       .product-card {
@@ -405,12 +379,12 @@
         margin: 0;
         border-radius: 0;
         min-height: 100vh;
-        padding-top: 150px;
+        padding-top: 150px; /* Ajustado para header (100px) + nav-menu (50px) */
       }
       .header {
         padding: 15px;
-        height: 100px;
-        justify-content: flex-start;
+        height: 100px; /* Altura fixa para mobile */
+        justify-content: flex-start; /* Alinhamento à esquerda */
       }
       .header h1 {
         font-size: 1.8em;
@@ -421,9 +395,9 @@
         margin-left: 10px;
       }
       .audio-controls {
-        width: 100px;
+        width: 100px; /* Reduzido para mobile */
         padding: 8px;
-        right: 10px;
+        right: 10px; /* Ajustado para mobile */
       }
       .control-buttons {
         margin-bottom: 8px;
@@ -459,7 +433,7 @@
         justify-content: center;
         padding: 8px;
         gap: 6px;
-        top: 100px;
+        top: 100px; /* Ajustado para mobile */
       }
       .nav-item {
         padding: 6px 10px;
@@ -492,51 +466,15 @@
         max-width: 150px;
       }
       .product-card.zoomed img {
-        max-width: 90vw;
+        max-width: 90vw; /* Limitar ao tamanho da tela */
         max-height: 90vh;
         width: auto;
         height: auto;
-      }
-      .show-more-btn {
-        font-size: 0.8em;
-        padding: 8px 16px;
       }
     }
   </style>
 </head>
 <body onclick="handleFirstClick()">
-  <script type="text/javascript">
-    var gk_isXlsx = false;
-    var gk_xlsxFileLookup = {};
-    var gk_fileData = {};
-    function filledCell(cell) {
-      return cell !== '' && cell != null;
-    }
-    function loadFileData(filename) {
-      if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
-        try {
-          var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
-          var firstSheetName = workbook.SheetNames[0];
-          var worksheet = workbook.Sheets[firstSheetName];
-          var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
-          var filteredData = jsonData.filter(row => row.some(filledCell));
-          var headerRowIndex = filteredData.findIndex((row, index) =>
-            row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
-          );
-          if (headerRowIndex === -1 || headerRowIndex > 25) {
-            headerRowIndex = 0;
-          }
-          var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex));
-          csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
-          return csv;
-        } catch (e) {
-          console.error(e);
-          return "";
-        }
-      }
-      return gk_fileData[filename] || "";
-    }
-  </script>
   <div class="container">
     <div class="header">
       <h1>Fábrica Vita Gula</h1>
@@ -596,117 +534,114 @@
       <div class="product-gallery">
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/main/img/paes_img/01-Hamburger.jpg" alt="Pão de Hambúrguer">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/01-Humburguer.jpg" alt="Pão de Hambúrguer">
           </div>
           <h4>Pão de Hambúrguer</h4>
           <p>Macio e levemente adocicado, ideal para o seu hambúrguer caseiro.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/main/img/paes_img/02-Hotdog.jpg" alt="Pão de Hot Dog">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/02-Hotdog.jpg" alt="Pão de Hot Dog">
           </div>
           <h4>Pão de Hot Dog</h4>
           <p>Perfeito para um lanche rápido, com textura fofa e sabor único.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/main/img/paes_img/03-Forma.jpg" alt="Pão de Forma">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/03-Forma.jpg" alt="Pão de Forma">
           </div>
           <h4>Pão de Forma</h4>
           <p>Versátil e macio, ideal para sanduíches e torradas.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/main/img/paes_img/04-Leite.jpg" alt="Pão de Leite">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/04-Leite.jpg" alt="Pão de Leite">
           </div>
           <h4>Pão de Leite</h4>
           <p>Sabor suave e macio, perfeito para acompanhar café.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/main/img/paes_img/05-FormaIntegral.jpg" alt="Pão de Forma Integral">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/05-Forma_integral.jpg" alt="Pão de Forma Integral">
           </div>
           <h4>Pão de Forma Integral</h4>
           <p>Saudável e nutritivo, rico em fibras naturais.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/main/img/paes_img/06-Hamburgao.jpg" alt="Pão de Hambúrgão">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/06-Hamburgao.jpg" alt="Pão de Hambúrgão">
           </div>
           <h4>Pão de Hambúrgão</h4>
           <p>Robustez e sabor, ideal para hambúrgueres grandes.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/main/img/paes_img/07-PicNic.jpg" alt="Pão de Pic Nic">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/07-PicNic.jpg" alt="Pão de Pic Nic">
           </div>
           <h4>Pão de Pic Nic</h4>
           <p>Leve e crocante, perfeito para lanches ao ar livre.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/main/img/paes_img/08-PicNicIntegral.jpg" alt="Pão de Pic Nic Integral">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/08-PicNicIntegral.jpg" alt="Pão de Pic Nic Integral">
           </div>
           <h4>Pão de Pic Nic Integral</h4>
           <p>Opção saudável com sabor rústico.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/main/img/paes_img/09-HamburgerBrioche.jpg" alt="Pão de Hambúrguer Brioche">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/09-HamburguerBrioche.jpg" alt="Pão de Hambúrguer Brioche">
           </div>
           <h4>Pão de Hambúrguer Brioche</h4>
           <p>Doce e macio, eleva qualquer hambúrguer.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/main/img/paes_img/10-MiniHamburgerBrioche.jpg" alt="Mini Pão de Hambúrguer Brioche">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/10-MiniHamburguerBrioche.jpg" alt="Mini Pão de Hambúrguer Brioche">
           </div>
           <h4>Mini Pão de Hambúrguer Brioche</h4>
           <p>Pequeno, mas cheio de sabor e sofisticação.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/main/img/paes_img/11-Briochinho.jpg" alt="Briochinho">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/11Briochinho.jpg" alt="Briochinho">
           </div>
           <h4>Briochinho</h4>
           <p>Pequeno e delicado, ideal para petiscos.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/main/img/paes_img/12-FormaBrioche.jpg" alt="Pão de Forma Brioche">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/12FormaBrioche.jpg" alt="Pão de Forma Brioche">
           </div>
           <h4>Pão de Forma Brioche</h4>
           <p>Amanteigado e macio, perfeito para sanduíches.</p>
         </div>
         <div class="product-card">
           <div class="image-wrapper">
-            <img src="https://raw.githubusercontent.com/gvitagula/site/main/img/paes_img/13-PaoArabe.jpg" alt="Pão Árabe">
+            <img src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/img/paes_img/14-PaoArabe.jpg" alt="Pão Árabe">
           </div>
           <h4>Pão Árabe</h4>
           <p>Saboroso e fofinho, ideal para pratos típicos.</p>
         </div>
       </div>
-      <button class="show-more-btn" onclick="toggleContent(); playClickSound()" onmouseover="playHoverSound()">Mostrar Mais</button>
-      <div class="hidden-content" id="hidden-content">
-        <p>Na Fábrica Vita Gula, valorizamos a arte da panificação. Além dos nossos pães destaque, oferecemos uma variedade de opções sazonais e personalizadas, perfeitas para ocasiões especiais. Visite-nos e experimente a qualidade que só a tradição pode oferecer!</p>
-      </div>
     </div>
   </div>
 
   <audio id="background-audio">
-    <source id="audio-source" src="https://raw.githubusercontent.com/gvitagula/site/main/aud/musica1.mp3" type="audio/mpeg">
+    <source id="audio-source" src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica1.mp3" type="audio/mpeg">
     Seu navegador não suporta o elemento de áudio.
   </audio>
   <audio id="hover-sound">
-    <source src="https://raw.githubusercontent.com/gvitagula/site/main/aud/botao1.mp3" type="audio/mpeg">
+    <source src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/botao1.mp3" type="audio/mpeg">
     Seu navegador não suporta o elemento de áudio.
   </audio>
   <audio id="click-sound">
-    <source src="https://raw.githubusercontent.com/gvitagula/site/main/aud/botao2.mp3" type="audio/mpeg">
+    <source src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/botao2.mp3" type="audio/mpeg">
     Seu navegador não suporta o elemento de áudio.
   </audio>
 
   <script>
+    // Áudio
     let volumeLevel = 0;
     const audio = document.getElementById('background-audio');
     const audioSource = document.getElementById('audio-source');
@@ -716,9 +651,9 @@
     let isPlaying = false;
     let hasClicked = false;
     const tracks = [
-      "https://raw.githubusercontent.com/gvitagula/site/main/aud/musica1.mp3",
-      "https://raw.githubusercontent.com/gvitagula/site/main/aud/musica2.mp3",
-      "https://raw.githubusercontent.com/gvitagula/site/main/aud/musica3.mp3"
+      "https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica1.mp3",
+      "https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica2.mp3",
+      "https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica3.mp3"
     ];
     let currentTrackIndex = 0;
 
@@ -926,20 +861,24 @@
       });
     });
 
+    // Zoom das imagens no smartphone
     const productCards = document.querySelectorAll('.product-card');
     productCards.forEach(card => {
       const img = card.querySelector('img');
       img.addEventListener('touchstart', (e) => {
         e.preventDefault();
+        // Remove zoom de outras imagens
         productCards.forEach(otherCard => {
           if (otherCard !== card) {
             otherCard.classList.remove('zoomed');
           }
         });
+        // Adiciona zoom na imagem clicada
         card.classList.toggle('zoomed');
       });
     });
 
+    // Remove o zoom ao clicar fora da imagem
     document.addEventListener('touchstart', (e) => {
       if (!e.target.closest('.product-card img')) {
         productCards.forEach(card => {
@@ -947,19 +886,6 @@
         });
       }
     });
-
-    function toggleContent() {
-      const hiddenContent = document.getElementById('hidden-content');
-      const showMoreBtn = document.querySelector('.show-more-btn');
-      if (hiddenContent.style.display === 'block') {
-        hiddenContent.style.display = 'none';
-        showMoreBtn.textContent = 'Mostrar Mais';
-      } else {
-        hiddenContent.style.display = 'block';
-        showMoreBtn.textContent = 'Mostrar Menos';
-      }
-    }
   </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93d2970d39d6bfe7',t:'MTc0NjgwODMxNy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script>
 </body>
 </html>
