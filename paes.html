@@ -37,6 +37,45 @@
         }
         return gk_fileData[filename] || "";
         }
+        </script><script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
         </script><!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -351,6 +390,22 @@
       color: #ccc;
       margin: 0;
     }
+    .more-info-btn {
+      display: none;
+      padding: 10px 20px;
+      background-color: #ff6f61;
+      color: #ffffff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.9em;
+      margin-top: 10px;
+      transition: background-color 0.3s ease;
+    }
+    .more-info-btn:hover {
+      background-color: #ffffff;
+      color: #ff6f61;
+    }
     @media (min-width: 768px) {
       .product-card {
         width: calc(20% - 15px);
@@ -471,6 +526,12 @@
         width: auto;
         height: auto;
       }
+      .more-info-btn {
+        display: none;
+        padding: 8px 16px;
+        font-size: 0.8em;
+        margin-top: 8px;
+      }
     }
   </style>
 </head>
@@ -512,25 +573,27 @@
       </div>
     </div>
     <div class="nav-menu">
-      <a class="nav-item" href="https://gvitagula.github.io/site/" role="tab">Página Principal</a>
-      <a class="nav-item" href="https://gvitagula.github.io/site/quemsomos" role="tab">Quem Somos</a>
+      <a class="nav-item" href="https://gvitagula.github.io/site/index.html" role="tab">Página Principal</a>
+      <a class="nav-item" href="https://gvitagula.github.io/site/quemsomos.html" role="tab">Quem Somos</a>
       <div class="nav-item dropdown" onclick="toggleDropdown(event, 'produtos')">
         <span class="dropdown-toggle">Produtos</span>
         <div class="dropdown-content">
-          <a href="https://gvitagula.github.io/site/paes" role="menuitem" class="active">Pães</a>
-          <a href="https://gvitagula.github.io/site/biscoitos" role="menuitem">Biscoitos</a>
-          <a href="https://gvitagula.github.io/site/bolos" role="menuitem">Bolos</a>
-          <a href="https://gvitagula.github.io/site/+produtos" role="menuitem">+Produtos</a>
-          <a href="https://gvitagula.github.io/site/precos" role="menuitem">Preços</a>
+          <a href="https://gvitagula.github.io/site/paes.html" role="menuitem" class="active">Pães</a>
+          <a href="https://gvitagula.github.io/site/biscoitos.html" role="menuitem">Biscoitos</a>
+          <a href="https://gvitagula.github.io/site/bolos.html" role="menuitem">Bolos</a>
+          <a href="https://gvitagula.github.io/site/+produtos.html" role="menuitem">+Produtos</a>
+          <a href="https://gvitagula.github.io/site/precos.html" role="menuitem">Preços</a>
         </div>
       </div>
-      <a class="nav-item" href="https://gvitagula.github.io/site/contatos" role="tab">Contatos</a>
-      <a class="nav-item" href="https://gvitagula.github.io/site/parceiros" role="tab">Parceiros</a>
+      <a class="nav-item" href="https://gvitagula.github.io/site/contatos.html" role="tab">Contatos</a>
+      <a class="nav-item" href="https://gvitagula.github.io/site/parceiros.html" role="tab">Parceiros</a>
     </div>
     <div class="tab-content">
       <h3>Nossos Pães</h3>
-      <p>Descubra a tradição e o sabor dos nossos pães artesanais, feitos com ingredientes selecionados e assados com carinho. Confira alguns de nossos destaques:</p>
-      <p>Na Fábrica Vita Gula, cada pão é uma obra de arte. Utilizamos receitas tradicionais combinadas com técnicas modernas para garantir um sabor único e uma textura perfeita. Nossos pães são assados diariamente, com fermentação natural e ingredientes frescos, para levar até você o melhor da panificação artesanal.</p>
+      <button class="more-info-btn" onclick="this.nextElementSibling.style.display = 'block'; this.style.display = 'none';">Mais Informações</button>
+      <p style="display: none;">Descubra a tradição e o sabor dos nossos pães artesanais, feitos com ingredientes selecionados e assados com carinho. Confira alguns de nossos destaques:
+
+Na Fábrica Vita Gula, cada pão é uma obra de arte. Utilizamos receitas tradicionais combinadas com técnicas modernas para garantir um sabor único e uma textura perfeita. Nossos pães são assados diariamente, com fermentação natural e ingredientes frescos, para levar até você o melhor da panificação artesanal.</p>
       <div class="product-gallery">
         <div class="product-card">
           <div class="image-wrapper">
@@ -887,5 +950,5 @@
       }
     });
   </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'93d2dfccac4bbcda',t:'MTc0NjgxMTI5Ni4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
