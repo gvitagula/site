@@ -69,12 +69,12 @@
       flex-direction: column;
       min-height: 100vh;
       box-sizing: border-box;
-      padding-top: 150px;
+      padding-top: 120px;
     }
     .header {
       background-color: #1e90ff;
       color: #ffffff;
-      padding: 10px;
+      padding: 8px;
       border-bottom: 5px solid #ff6f61;
       position: fixed;
       top: 0;
@@ -84,24 +84,24 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 80px;
+      height: 60px;
       z-index: 1001;
     }
     .title-container {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding-left: 10px;
+      padding-left: 8px;
     }
     .header h1 {
       margin: 0;
-      font-size: 1.8em;
+      font-size: 1.6em;
       font-weight: 600;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
     .header p {
       margin: 2px 0 0;
-      font-size: 0.9em;
+      font-size: 0.8em;
       font-weight: 400;
     }
     .audio-controls {
@@ -109,10 +109,10 @@
       flex-direction: row;
       align-items: center;
       background-color: #1e90ff;
-      padding: 5px;
-      border-radius: 10px;
+      padding: 3px;
+      border-radius: 8px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      margin-right: 10px;
+      margin-right: 8px;
     }
     .control-buttons {
       display: flex;
@@ -122,11 +122,11 @@
     .control-buttons .control-btn {
       cursor: pointer;
       color: #ffffff;
-      font-size: 0.8em;
-      margin: 0 2px;
+      font-size: 0.7em;
+      margin: 0 1px;
       transition: transform 0.1s ease;
-      min-width: 36px;
-      min-height: 36px;
+      min-width: 32px;
+      min-height: 32px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -136,28 +136,28 @@
       transform: scale(1.1);
     }
     .control-buttons .play-pause-btn {
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
       background-color: #ffffff;
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
       color: #1e90ff;
-      font-size: 0.8em;
+      font-size: 0.6em;
     }
     .volume-icon {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 20px;
-      height: 20px;
+      width: 16px;
+      height: 16px;
       cursor: pointer;
       color: #ffffff;
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 50%;
       transition: transform 0.2s ease, background-color 0.2s ease;
-      margin-left: 5px;
+      margin-left: 3px;
       touch-action: manipulation;
     }
     .volume-icon:hover {
@@ -165,13 +165,13 @@
       background-color: rgba(255, 255, 255, 0.3);
     }
     .volume-icon svg {
-      width: 14px;
-      height: 14px;
+      width: 10px;
+      height: 10px;
       fill: #ffffff;
     }
     .waveform {
-      width: 50px;
-      height: 10px;
+      width: 35px;
+      height: 6px;
       background-color: #ffffff;
       border-radius: 5px;
       position: relative;
@@ -179,11 +179,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 2px;
-      margin-left: 5px;
+      padding: 0 1px;
+      margin-left: 3px;
     }
     .waveform .bar {
-      width: 1px;
+      width: 0.7px;
       height: 100%;
       background-color: #1e90ff;
       border-radius: 2px;
@@ -212,7 +212,7 @@
       flex-wrap: wrap;
       gap: 6px;
       position: fixed;
-      top: 80px;
+      top: 60px;
       width: 100%;
       max-width: 1200px;
       z-index: 1000;
@@ -287,19 +287,6 @@
     .dropdown-content a:hover {
       background-color: #ff6f61;
       color: #ffffff;
-    }
-    .dropdown-content .submenu {
-      display: none;
-      position: absolute;
-      left: 100%;
-      top: 0;
-      background-color: #3a3a3a;
-      min-width: 150px;
-      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.5);
-      border-radius: 5px;
-    }
-    .dropdown-content .submenu-item:hover .submenu {
-      display: block;
     }
     .tab-content {
       padding: 15px;
@@ -423,11 +410,14 @@
     }
     @media (min-width: 768px) {
       .container {
-        padding-top: 150px;
+        padding-top: 120px;
       }
       .header {
-        height: 80px;
+        height: 70px;
         padding: 10px;
+      }
+      .title-container {
+        padding-left: 10px;
       }
       .header h1 {
         font-size: 2em;
@@ -471,7 +461,7 @@
       .nav-menu {
         padding: 10px;
         gap: 8px;
-        top: 80px;
+        top: 70px;
       }
       .nav-item {
         padding: 8px 12px;
@@ -488,70 +478,64 @@
         margin: 0;
         border-radius: 0;
         min-height: 100vh;
-        padding-top: 120px;
+        padding-top: 100px;
       }
       .header {
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
         padding: 5px;
-        height: 100px;
+        height: 50px;
       }
       .title-container {
-        align-items: center;
-        padding-left: 0;
+        padding-left: 5px;
       }
       .header h1 {
-        font-size: 1.6em;
-        text-align: center;
+        font-size: 1.4em;
       }
       .header p {
-        font-size: 0.75em;
-        text-align: center;
-        line-height: 1.4;
+        font-size: 0.7em;
+        line-height: 1.2;
       }
       .audio-controls {
-        flex-direction: row;
-        margin: 5px 0 0;
-        padding: 3px;
+        padding: 2px;
+        margin-right: 5px;
       }
       .control-buttons .control-btn {
-        font-size: 0.7em;
+        font-size: 0.6em;
         margin: 0 1px;
-        min-width: 32px;
-        min-height: 32px;
+        min-width: 28px;
+        min-height: 28px;
       }
       .control-buttons .play-pause-btn {
         width: 14px;
         height: 14px;
-        font-size: 0.6em;
+        font-size: 0.5em;
       }
       .volume-icon {
         width: 14px;
         height: 14px;
-        margin-left: 3px;
+        margin-left: 2px;
       }
       .volume-icon svg {
-        width: 10px;
-        height: 10px;
+        width: 8px;
+        height: 8px;
       }
       .waveform {
-        width: 35px;
-        height: 6px;
+        width: 30px;
+        height: 5px;
         padding: 0 1px;
-        margin-left: 3px;
+        margin-left: 2px;
       }
       .waveform .bar {
-        width: 0.7px;
+        width: 0.6px;
       }
       .nav-menu {
-        padding: 6px;
-        gap: 5px;
-        top: 100px;
+        padding: 5px;
+        gap: 4px;
+        top: 50px;
       }
       .nav-item {
-        padding: 5px 8px;
-        font-size: 0.75em;
+        padding: 4px 6px;
+        font-size: 0.7em;
+        min-width: 40px;
       }
       .dropdown-content {
         width: 100%;
@@ -563,17 +547,17 @@
         border-radius: 0 0 5px 5px;
       }
       .dropdown-content a {
-        font-size: 0.8em;
-        padding: 8px 12px;
+        font-size: 0.7em;
+        padding: 6px 10px;
         text-align: center;
       }
       .tab-content {
-        padding: 12px;
-        margin: 8px;
+        padding: 10px;
+        margin: 6px;
       }
       .message-box {
-        padding: 10px;
-        font-size: 0.9em;
+        padding: 8px;
+        font-size: 0.8em;
       }
       .next-btn {
         padding: 3px 10px;
@@ -581,13 +565,13 @@
         min-height: 32px;
       }
       .welcome-message {
-        font-size: 0.8em;
-        padding: 10px;
+        font-size: 0.7em;
+        padding: 8px;
       }
       .visitor-counter {
-        max-width: 200px;
-        padding: 10px;
-        font-size: 0.9em;
+        max-width: 180px;
+        padding: 8px;
+        font-size: 0.8em;
       }
     }
   </style>
@@ -637,36 +621,10 @@
       <div class="nav-item dropdown" onclick="toggleDropdown(event, 'produtos')" onmouseover="playHoverSound()">
         <span class="dropdown-toggle">Produtos</span>
         <div class="dropdown-content">
-          <div class="submenu-item">
-            <a href="https://gvitagula.github.io/paes/" role="menuitem" onmouseover="playHoverSound()">Pães</a>
-            <div class="submenu">
-              <a href="https://gvitagula.github.io/paes/hamburguer/" role="menuitem" onmouseover="playHoverSound()">Pão de Hambúrguer</a>
-              <a href="https://gvitagula.github.io/paes/hotdog/" role="menuitem" onmouseover="playHoverSound()">Pão de Hot Dog</a>
-              <a href="https://gvitagula.github.io/paes/forma/" role="menuitem" onmouseover="playHoverSound()">Pão de Forma</a>
-              <a href="https://gvitagula.github.io/paes/leite/" role="menuitem" onmouseover="playHoverSound()">Pão de Leite</a>
-            </div>
-          </div>
-          <div class="submenu-item">
-            <a href="https://gvitagula.github.io/biscoitos/" role="menuitem" onmouseover="playHoverSound()">Biscoitos</a>
-            <div class="submenu">
-              <a href="https://gvitagula.github.io/biscoitos/salgado/" role="menuitem" onmouseover="playHoverSound()">Biscoito Salgado</a>
-              <a href="https://gvitagula.github.io/biscoitos/doce/" role="menuitem" onmouseover="playHoverSound()">Biscoito Doce</a>
-            </div>
-          </div>
-          <div class="submenu-item">
-            <a href="https://gvitagula.github.io/bolos/" role="menuitem" onmouseover="playHoverSound()">Bolos</a>
-            <div class="submenu">
-              <a href="https://gvitagula.github.io/bolos/chocolate/" role="menuitem" onmouseover="playHoverSound()">Bolo de Chocolate</a>
-              <a href="https://gvitagula.github.io/bolos/vanilla/" role="menuitem" onmouseover="playHoverSound()">Bolo de Baunilha</a>
-            </div>
-          </div>
-          <div class="submenu-item">
-            <a href="https://gvitagula.github.io/+produtos/" role="menuitem" onmouseover="playHoverSound()">+Produtos</a>
-            <div class="submenu">
-              <a href="https://gvitagula.github.io/+produtos/sobremesas/" role="menuitem" onmouseover="playHoverSound()">Sobremesas</a>
-              <a href="https://gvitagula.github.io/+produtos/bebidas/" role="menuitem" onmouseover="playHoverSound()">Bebidas</a>
-            </div>
-          </div>
+          <a href="https://gvitagula.github.io/paes/" role="menuitem" onmouseover="playHoverSound()">Pães</a>
+          <a href="https://gvitagula.github.io/biscoitos/" role="menuitem" onmouseover="playHoverSound()">Biscoitos</a>
+          <a href="https://gvitagula.github.io/bolos/" role="menuitem" onmouseover="playHoverSound()">Bolos</a>
+          <a href="https://gvitagula.github.io/+produtos/" role="menuitem" onmouseover="playHoverSound()">+Produtos</a>
           <a href="https://gvitagula.github.io/precos/" role="menuitem" onmouseover="playHoverSound()">Preços</a>
         </div>
       </div>
@@ -675,48 +633,12 @@
       <div class="nav-item dropdown" onclick="toggleDropdown(event, 'downloads')" onmouseover="playHoverSound()">
         <span class="dropdown-toggle">Downloads</span>
         <div class="dropdown-content">
-          <div class="submenu-item">
-            <a href="https://gvitagula.github.io/pdf/" role="menuitem" onmouseover="playHoverSound()">Texto</a>
-            <div class="submenu">
-              <a href="https://gvitagula.github.io/pdf/catalogos/" role="menuitem" onmouseover="playHoverSound()">Catálogos</a>
-              <a href="https://gvitagula.github.io/pdf/manuais/" role="menuitem" onmouseover="playHoverSound()">Manuais</a>
-            </div>
-          </div>
-          <div class="submenu-item">
-            <a href="https://gvitagula.github.io/imagens/" role="menuitem" onmouseover="playHoverSound()">Imagens</a>
-            <div class="submenu">
-              <a href="https://gvitagula.github.io/imagens/paes/" role="menuitem" onmouseover="playHoverSound()">Pães</a>
-              <a href="https://gvitagula.github.io/imagens/produtos/" role="menuitem" onmouseover="playHoverSound()">Outros Produtos</a>
-            </div>
-          </div>
-          <div class="submenu-item">
-            <a href="https://gvitagula.github.io/mp3/" role="menuitem" onmouseover="playHoverSound()">Áudios</a>
-            <div class="submenu">
-              <a href="https://gvitagula.github.io/mp3/musicas/" role="menuitem" onmouseover="playHoverSound()">Músicas</a>
-              <a href="https://gvitagula.github.io/mp3/efeitos/" role="menuitem" onmouseover="playHoverSound()">Efeitos</a>
-            </div>
-          </div>
-          <div class="submenu-item">
-            <a href="https://gvitagula.github.io/video/" role="menuitem" onmouseover="playHoverSound()">Vídeos</a>
-            <div class="submenu">
-              <a href="https://gvitagula.github.io/video/receitas/" role="menuitem" onmouseover="playHoverSound()">Receitas</a>
-              <a href="https://gvitagula.github.io/video/tutoriais/" role="menuitem" onmouseover="playHoverSound()">Tutoriais</a>
-            </div>
-          </div>
-          <div class="submenu-item">
-            <a href="https://gvitagula.github.io/programas/" role="menuitem" onmouseover="playHoverSound()">Programas</a>
-            <div class="submenu">
-              <a href="https://gvitagula.github.io/programas/desktop/" role="menuitem" onmouseover="playHoverSound()">Desktop</a>
-              <a href="https://gvitagula.github.io/programas/mobile/" role="menuitem" onmouseover="playHoverSound()">Mobile</a>
-            </div>
-          </div>
-          <div class="submenu-item">
-            <a href="https://gvitagula.github.io/outros/" role="menuitem" onmouseover="playHoverSound()">Outros</a>
-            <div class="submenu">
-              <a href="https://gvitagula.github.io/outros/documentos/" role="menuitem" onmouseover="playHoverSound()">Documentos</a>
-              <a href="https://gvitagula.github.io/outros/outros/" role="menuitem" onmouseover="playHoverSound()">Outros Arquivos</a>
-            </div>
-          </div>
+          <a href="https://gvitagula.github.io/pdf/" role="menuitem" onmouseover="playHoverSound()">Texto</a>
+          <a href="https://gvitagula.github.io/imagens/" role="menuitem" onmouseover="playHoverSound()">Imagens</a>
+          <a href="https://gvitagula.github.io/mp3/" role="menuitem" onmouseover="playHoverSound()">Áudios</a>
+          <a href="https://gvitagula.github.io/video/" role="menuitem" onmouseover="playHoverSound()">Vídeos</a>
+          <a href="https://gvitagula.github.io/programas/" role="menuitem" onmouseover="playHoverSound()">Programas</a>
+          <a href="https://gvitagula.github.io/outros/" role="menuitem" onmouseover="playHoverSound()">Outros</a>
         </div>
       </div>
     </div>
@@ -793,8 +715,8 @@
       const volumeIcon = document.getElementById('volume-icon');
       const muteIcon = volumeIcon.querySelector('.volume-mute');
       const lowIcon = volumeIcon.querySelector('.volume-low');
-      const mediumIcon = volumeIcon.querySelector('.volume-medium');
-      const highIcon = volumeIcon.querySelector('.volume-high');
+      const mediumIcon = document.getElementById('volume-icon').querySelector('.volume-medium');
+      const highIcon = document.getElementById('volume-icon').querySelector('.volume-high');
       volumeIcon.classList.remove('mute', 'low', 'medium', 'high');
       muteIcon.style.display = 'none';
       lowIcon.style.display = 'none';
