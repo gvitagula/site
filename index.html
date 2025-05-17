@@ -74,7 +74,7 @@
     .header {
       background-color: #1e90ff;
       color: #ffffff;
-      padding: 5px;
+      padding: 10px;
       border-bottom: 5px solid #ff6f61;
       position: fixed;
       top: 0;
@@ -82,15 +82,16 @@
       max-width: 1200px;
       box-sizing: border-box;
       display: flex;
-      flex-direction: row;
       justify-content: space-between;
       align-items: center;
-      height: 60px;
+      height: 80px;
       z-index: 1001;
     }
     .title-container {
-      width: 70%;
-      padding-left: 5px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-left: 10px;
     }
     .header h1 {
       margin: 0;
@@ -99,7 +100,7 @@
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
     }
     .header p {
-      margin: 0;
+      margin: 2px 0 0;
       font-size: 0.9em;
       font-weight: 400;
     }
@@ -107,14 +108,11 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      justify-content: flex-end;
       background-color: #1e90ff;
-      padding: 2px;
+      padding: 5px;
       border-radius: 10px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-      width: 25%;
-      max-width: 80px;
-      margin-right: 5px;
+      margin-right: 10px;
     }
     .control-buttons {
       display: flex;
@@ -124,11 +122,11 @@
     .control-buttons .control-btn {
       cursor: pointer;
       color: #ffffff;
-      font-size: 0.7em;
-      margin: 0 1px;
+      font-size: 0.8em;
+      margin: 0 2px;
       transition: transform 0.1s ease;
-      min-width: 32px;
-      min-height: 32px;
+      min-width: 36px;
+      min-height: 36px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -138,28 +136,28 @@
       transform: scale(1.1);
     }
     .control-buttons .play-pause-btn {
-      width: 14px;
-      height: 14px;
+      width: 20px;
+      height: 20px;
       background-color: #ffffff;
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
       color: #1e90ff;
-      font-size: 0.6em;
+      font-size: 0.8em;
     }
     .volume-icon {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 14px;
-      height: 14px;
+      width: 20px;
+      height: 20px;
       cursor: pointer;
       color: #ffffff;
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 50%;
       transition: transform 0.2s ease, background-color 0.2s ease;
-      margin-left: 2px;
+      margin-left: 5px;
       touch-action: manipulation;
     }
     .volume-icon:hover {
@@ -167,13 +165,13 @@
       background-color: rgba(255, 255, 255, 0.3);
     }
     .volume-icon svg {
-      width: 10px;
-      height: 10px;
+      width: 14px;
+      height: 14px;
       fill: #ffffff;
     }
     .waveform {
-      width: 35px;
-      height: 6px;
+      width: 50px;
+      height: 10px;
       background-color: #ffffff;
       border-radius: 5px;
       position: relative;
@@ -181,11 +179,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 1px;
-      margin-left: 2px;
+      padding: 0 2px;
+      margin-left: 5px;
     }
     .waveform .bar {
-      width: 0.7px;
+      width: 1px;
       height: 100%;
       background-color: #1e90ff;
       border-radius: 2px;
@@ -214,7 +212,7 @@
       flex-wrap: wrap;
       gap: 6px;
       position: fixed;
-      top: 60px;
+      top: 80px;
       width: 100%;
       max-width: 1200px;
       z-index: 1000;
@@ -344,16 +342,17 @@
     .next-btn {
       display: block;
       margin: 8px auto;
-      padding: 6px 12px;
+      padding: 4px 12px;
       background-color: #ff6f61;
       color: #ffffff;
       border: none;
       border-radius: 5px;
       cursor: pointer;
       font-weight: 600;
+      font-size: 0.9em;
       transition: background-color 0.3s ease;
       min-width: 44px;
-      min-height: 44px;
+      min-height: 36px;
       touch-action: manipulation;
     }
     .next-btn:hover {
@@ -430,10 +429,6 @@
         height: 80px;
         padding: 10px;
       }
-      .title-container {
-        width: 75%;
-        padding-left: 10px;
-      }
       .header h1 {
         font-size: 2em;
       }
@@ -441,16 +436,8 @@
         font-size: 1em;
       }
       .audio-controls {
-        flex-direction: column;
-        width: 100px;
         padding: 5px;
         margin-right: 10px;
-        max-width: none;
-        justify-content: center;
-        align-items: center;
-      }
-      .control-buttons {
-        margin-bottom: 3px;
       }
       .control-buttons .control-btn {
         font-size: 0.8em;
@@ -466,21 +453,20 @@
       .volume-icon {
         width: 20px;
         height: 20px;
-        margin-left: 0;
-        margin-top: 3px;
+        margin-left: 5px;
       }
       .volume-icon svg {
         width: 14px;
         height: 14px;
       }
       .waveform {
-        width: 80%;
+        width: 50px;
         height: 10px;
-        margin-left: 0;
+        margin-left: 5px;
         padding: 0 2px;
       }
       .waveform .bar {
-        width: 1.2px;
+        width: 1px;
       }
       .nav-menu {
         padding: 10px;
@@ -502,30 +488,32 @@
         margin: 0;
         border-radius: 0;
         min-height: 100vh;
-        padding-top: 100px;
+        padding-top: 120px;
       }
       .header {
-        flex-direction: row;
-        justify-content: space-between;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
         padding: 5px;
-        height: 60px;
+        height: 100px;
       }
       .title-container {
-        width: 70%;
-        padding-left: 5px;
+        align-items: center;
+        padding-left: 0;
       }
       .header h1 {
         font-size: 1.6em;
+        text-align: center;
       }
       .header p {
         font-size: 0.75em;
+        text-align: center;
         line-height: 1.4;
       }
       .audio-controls {
-        width: 25%;
-        max-width: 80px;
-        padding: 2px;
-        margin-right: 5px;
+        flex-direction: row;
+        margin: 5px 0 0;
+        padding: 3px;
       }
       .control-buttons .control-btn {
         font-size: 0.7em;
@@ -541,8 +529,7 @@
       .volume-icon {
         width: 14px;
         height: 14px;
-        margin-left: 2px;
-        margin-top: 0;
+        margin-left: 3px;
       }
       .volume-icon svg {
         width: 10px;
@@ -552,7 +539,7 @@
         width: 35px;
         height: 6px;
         padding: 0 1px;
-        margin-left: 2px;
+        margin-left: 3px;
       }
       .waveform .bar {
         width: 0.7px;
@@ -560,7 +547,7 @@
       .nav-menu {
         padding: 6px;
         gap: 5px;
-        top: 60px;
+        top: 100px;
       }
       .nav-item {
         padding: 5px 8px;
@@ -589,8 +576,9 @@
         font-size: 0.9em;
       }
       .next-btn {
-        padding: 5px 10px;
+        padding: 3px 10px;
         font-size: 0.8em;
+        min-height: 32px;
       }
       .welcome-message {
         font-size: 0.8em;
