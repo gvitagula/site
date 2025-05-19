@@ -59,7 +59,6 @@
     }
     .container {
       width: 100%;
-      max-width: 1200px;
       background-color: #2c2c2c;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
       border-radius: 15px;
@@ -69,64 +68,76 @@
       flex-direction: column;
       min-height: 100vh;
       box-sizing: border-box;
-      padding-top: 120px;
+      padding-top: 140px;
     }
     .header {
-      background-color: #1e90ff;
+      background: linear-gradient(135deg, #1e90ff 0%, #00cc99 100%);
       color: #ffffff;
-      padding: 8px;
+      padding: 20px 40px; /* Increased for more open feel */
       border-bottom: 5px solid #ff6f61;
       position: fixed;
       top: 0;
       width: 100%;
-      max-width: 1200px;
       box-sizing: border-box;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      height: 60px;
+      height: 100px; /* Taller for spaciousness */
       z-index: 1001;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     }
     .title-container {
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding-left: 8px;
+      padding-left: 10px;
+      max-width: 75%;
     }
     .header h1 {
       margin: 0;
-      font-size: 1.6em;
+      font-size: 1.8em;
       font-weight: 600;
       text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
     .header p {
       margin: 2px 0 0;
-      font-size: 0.8em;
+      font-size: 0.9em;
       font-weight: 400;
+      line-height: 1.2;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .header p:last-child {
+      font-size: 0.8em;
+      opacity: 0.9;
     }
     .audio-controls {
       display: flex;
-      flex-direction: row;
+      flex-direction: column;
       align-items: center;
-      background-color: #1e90ff;
-      padding: 3px;
-      border-radius: 8px;
+      background-color: rgba(255, 255, 255, 0.1);
+      padding: 4px; /* Minimized for compactness */
+      border-radius: 6px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
       margin-right: 8px;
     }
     .control-buttons {
       display: flex;
-      justify-content: center;
+      flex-direction: column;
       align-items: center;
+      gap: 2px; /* Tightly packed */
     }
     .control-buttons .control-btn {
       cursor: pointer;
       color: #ffffff;
       font-size: 0.7em;
-      margin: 0 1px;
       transition: transform 0.1s ease;
-      min-width: 32px;
-      min-height: 32px;
+      min-width: 26px; /* Smaller for compactness */
+      min-height: 26px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -136,28 +147,32 @@
       transform: scale(1.1);
     }
     .control-buttons .play-pause-btn {
-      width: 16px;
-      height: 16px;
+      width: 18px; /* Smaller */
+      height: 18px;
       background-color: #ffffff;
       border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
       color: #1e90ff;
-      font-size: 0.6em;
+      font-size: 0.7em;
+    }
+    .track-controls {
+      display: flex;
+      align-items: center;
+      gap: 4px; /* Very tight horizontal spacing */
     }
     .volume-icon {
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 16px;
-      height: 16px;
+      width: 18px; /* Smaller */
+      height: 18px;
       cursor: pointer;
       color: #ffffff;
       background-color: rgba(255, 255, 255, 0.1);
       border-radius: 50%;
       transition: transform 0.2s ease, background-color 0.2s ease;
-      margin-left: 3px;
       touch-action: manipulation;
     }
     .volume-icon:hover {
@@ -165,25 +180,24 @@
       background-color: rgba(255, 255, 255, 0.3);
     }
     .volume-icon svg {
-      width: 10px;
+      width: 10px; /* Smaller SVG */
       height: 10px;
       fill: #ffffff;
     }
     .waveform {
-      width: 35px;
+      width: 32px; /* Smaller for tightness */
       height: 6px;
       background-color: #ffffff;
-      border-radius: 5px;
+      border-radius: 4px;
       position: relative;
       overflow: hidden;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 1px;
-      margin-left: 3px;
+      padding: 0 2px;
     }
     .waveform .bar {
-      width: 0.7px;
+      width: 0.6px;
       height: 100%;
       background-color: #1e90ff;
       border-radius: 2px;
@@ -212,9 +226,8 @@
       flex-wrap: wrap;
       gap: 6px;
       position: fixed;
-      top: 60px;
+      top: 100px; /* Adjusted for taller header */
       width: 100%;
-      max-width: 1200px;
       z-index: 1000;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
       box-sizing: border-box;
@@ -410,19 +423,24 @@
     }
     @media (min-width: 768px) {
       .container {
-        padding-top: 120px;
+        max-width: 1600px;
+        padding-top: 160px; /* Adjusted for taller header */
       }
       .header {
-        height: 70px;
-        padding: 10px;
+        height: 110px; /* Taller for desktop */
+        padding: 25px 50px; /* More spacious */
       }
       .title-container {
-        padding-left: 10px;
+        padding-left: 12px;
+        max-width: 80%;
       }
       .header h1 {
-        font-size: 2em;
+        font-size: 2.2em;
       }
       .header p {
+        font-size: 1.1em;
+      }
+      .header p:last-child {
         font-size: 1em;
       }
       .audio-controls {
@@ -431,9 +449,8 @@
       }
       .control-buttons .control-btn {
         font-size: 0.8em;
-        margin: 0 2px;
-        min-width: 36px;
-        min-height: 36px;
+        min-width: 28px;
+        min-height: 28px;
       }
       .control-buttons .play-pause-btn {
         width: 20px;
@@ -443,25 +460,22 @@
       .volume-icon {
         width: 20px;
         height: 20px;
-        margin-left: 5px;
       }
       .volume-icon svg {
-        width: 14px;
-        height: 14px;
+        width: 12px;
+        height: 12px;
       }
       .waveform {
-        width: 50px;
-        height: 10px;
-        margin-left: 5px;
-        padding: 0 2px;
+        width: 36px;
+        height: 8px;
       }
-      .waveform .bar {
-        width: 1px;
+      .track-controls {
+        gap: 5px;
       }
       .nav-menu {
         padding: 10px;
         gap: 8px;
-        top: 70px;
+        top: 110px;
       }
       .nav-item {
         padding: 8px 12px;
@@ -474,67 +488,63 @@
     }
     @media (max-width: 600px) {
       .container {
-        width: 100%;
-        margin: 0;
         border-radius: 0;
-        min-height: 100vh;
-        padding-top: 100px;
+        padding-top: 140px;
       }
       .header {
-        padding: 5px;
-        height: 50px;
+        height: 90px;
+        padding: 15px 25px; /* Balanced for mobile */
       }
       .title-container {
-        padding-left: 5px;
+        padding-left: 8px;
+        max-width: 70%;
       }
       .header h1 {
-        font-size: 1.4em;
+        font-size: 1.6em;
       }
       .header p {
+        font-size: 0.8em;
+      }
+      .header p:last-child {
         font-size: 0.7em;
-        line-height: 1.2;
       }
       .audio-controls {
-        padding: 2px;
-        margin-right: 5px;
+        padding: 3px;
+        margin-right: 6px;
       }
       .control-buttons .control-btn {
         font-size: 0.6em;
-        margin: 0 1px;
-        min-width: 28px;
-        min-height: 28px;
+        min-width: 24px;
+        min-height: 24px;
       }
       .control-buttons .play-pause-btn {
-        width: 14px;
-        height: 14px;
-        font-size: 0.5em;
+        width: 16px;
+        height: 16px;
+        font-size: 0.6em;
       }
       .volume-icon {
-        width: 14px;
-        height: 14px;
-        margin-left: 2px;
+        width: 16px;
+        height: 16px;
       }
       .volume-icon svg {
         width: 8px;
         height: 8px;
       }
       .waveform {
-        width: 30px;
+        width: 28px;
         height: 5px;
-        padding: 0 1px;
-        margin-left: 2px;
       }
-      .waveform .bar {
-        width: 0.6px;
+      .track-controls {
+        gap: 3px;
       }
       .nav-menu {
         padding: 5px;
         gap: 4px;
-        top: 50px;
+        top: 90px;
       }
       .nav-item {
-        padding: 4px 6px;
-        font-size: 0.7em;
+        padding: 4px 8px;
+        font-size: 0.8em;
         min-width: 40px;
       }
       .dropdown-content {
@@ -578,43 +588,46 @@
 </head>
 <body onclick="handleFirstClick()">
   <div class="container">
-    <div class="header">
+    <header class="header" role="banner" aria-label="Cabeçalho da Fábrica Vita Gula">
       <div class="title-container">
         <h1>Fábrica Vita Gula</h1>
-        <p>Sabor, Tradição e Qualidade Desde 2001</p>
+        <p>Sabor, Tradição e Qualidade</p>
+        <p>Desde 2001</p>
       </div>
       <div class="audio-controls" role="region" aria-label="Controles de áudio">
         <div class="control-buttons">
-          <span class="control-btn" id="prev-btn" onclick="playClickSound(); playPrevious()" onmouseover="playHoverSound()" aria-label="Tocar faixa anterior">⏮</span>
-          <span class="control-btn play-pause-btn" id="play-pause-btn" onclick="playClickSound(); togglePlayPause()" onmouseover="playHoverSound()" aria-label="Tocar ou pausar">▶</span>
-          <span class="control-btn" id="next-btn" onclick="playClickSound(); playNext()" onmouseover="playHoverSound()" aria-label="Tocar próxima faixa">⏭</span>
+          <span class="control-btn play-pause-btn" id="play-pause-btn" onclick="playClickSound(); togglePlayPause()" onmouseover="playHoverSound()" aria-label="Tocar ou pausar" tabindex="0" onkeydown="if(event.key === 'Enter') { playClickSound(); togglePlayPause(); }">▶</span>
+          <div class="track-controls">
+            <span class="control-btn" id="prev-btn" onclick="playClickSound(); playPrevious()" onmouseover="playHoverSound()" aria-label="Tocar faixa anterior" tabindex="0" onkeydown="if(event.key === 'Enter') { playClickSound(); playPrevious(); }">⏮</span>
+            <div class="waveform" id="waveform">
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+              <div class="bar"></div>
+            </div>
+            <span class="control-btn" id="next-btn" onclick="playClickSound(); playNext()" onmouseover="playHoverSound()" aria-label="Tocar próxima faixa" tabindex="0" onkeydown="if(event.key === 'Enter') { playClickSound(); playNext(); }">⏭</span>
+          </div>
+          <span class="volume-icon low" id="volume-icon" onclick="playClickSound(); changeVolume()" onmouseover="playHoverSound()" aria-label="Ajustar volume" tabindex="0" onkeydown="if(event.key === 'Enter') { playClickSound(); changeVolume(); }">
+            <svg class="volume-mute" viewBox="0 0 24 24" style="display: none;">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm11 0l3.5 3.5L14 15V9zm5.5 3l-2.5-2.5L19.5 7l2.5 2.5L19.5 12z"/>
+            </svg>
+            <svg class="volume-low" viewBox="0 0 24 24">
+              <path d="M3 9v6h4l5 5V4L7 9H3z"/>
+            </svg>
+            <svg class="volume-medium" viewBox="0 0 24 24" style="display: none;">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
+            </svg>
+            <svg class="volume-high" viewBox="0 0 24 24" style="display: none;">
+              <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+          </span>
         </div>
-        <div class="waveform" id="waveform">
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-          <div class="bar"></div>
-        </div>
-        <span class="volume-icon low" id="volume-icon" onclick="playClickSound(); changeVolume()" onmouseover="playHoverSound()" aria-label="Ajustar volume">
-          <svg class="volume-mute" viewBox="0 0 24 24" style="display: none;">
-            <path d="M3 9v6h4l5 5V4L7 9H3zm11 0l3.5 3.5L14 15V9zm5.5 3l-2.5-2.5L19.5 7l2.5 2.5L19.5 12z"/>
-          </svg>
-          <svg class="volume-low" viewBox="0 0 24 24">
-            <path d="M3 9v6h4l5 5V4L7 9H3z"/>
-          </svg>
-          <svg class="volume-medium" viewBox="0 0 24 24" style="display: none;">
-            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02z"/>
-          </svg>
-          <svg class="volume-high" viewBox="0 0 24 24" style="display: none;">
-            <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-          </svg>
-        </span>
       </div>
-    </div>
+    </header>
     <div class="nav-menu">
       <a class="nav-item active" href="https://gvitagula.github.io/site/" role="tab" onmouseover="playHoverSound()">Página Principal</a>
       <a class="nav-item" href="https://gvitagula.github.io/site/quemsomos" role="tab" onmouseover="playHoverSound()">Quem Somos</a>
@@ -680,6 +693,7 @@
     const audio = document.getElementById('background-audio');
     const audioSource = document.getElementById('audio-source');
     const waveform = document.getElementById('waveform');
+    const playPauseBtn = document.getElementById('play-pause-btn');
     const hoverSound = document.getElementById('hover-sound');
     const clickSound = document.getElementById('click-sound');
     let isPlaying = false;
@@ -715,8 +729,8 @@
       const volumeIcon = document.getElementById('volume-icon');
       const muteIcon = volumeIcon.querySelector('.volume-mute');
       const lowIcon = volumeIcon.querySelector('.volume-low');
-      const mediumIcon = document.getElementById('volume-icon').querySelector('.volume-medium');
-      const highIcon = document.getElementById('volume-icon').querySelector('.volume-high');
+      const mediumIcon = volumeIcon.querySelector('.volume-medium');
+      const highIcon = volumeIcon.querySelector('.volume-high');
       volumeIcon.classList.remove('mute', 'low', 'medium', 'high');
       muteIcon.style.display = 'none';
       lowIcon.style.display = 'none';
@@ -746,7 +760,6 @@
     }
 
     function togglePlayPause() {
-      const playPauseBtn = document.getElementById('play-pause-btn');
       if (isPlaying) {
         audio.pause();
         playPauseBtn.innerHTML = '▶';
@@ -788,6 +801,7 @@
           await audio.play();
           currentTrackIndex = newIndex;
           waveform.classList.add('playing');
+          playPauseBtn.innerHTML = '⏸';
         } else {
           currentTrackIndex = newIndex;
         }
@@ -804,6 +818,7 @@
           await audio.play();
           currentTrackIndex = newIndex;
           waveform.classList.add('playing');
+          playPauseBtn.innerHTML = '⏸';
         } else {
           currentTrackIndex = newIndex;
         }
