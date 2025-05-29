@@ -628,31 +628,32 @@
         </div>
       </div>
     </header>
-    <div class="nav-menu" role="navigation" aria-label="Menu principal">
-      <a class="nav-item" href="https://gvitagula.github.io/site/" onclick="playClickSound()" onmouseover="playHoverSound()" role="tab" aria-selected="false">Página Principal</a>
-      <a class="nav-item" href="https://gvitagula.github.io/quemsomos/" onclick="playClickSound()" onmouseover="playHoverSound()" role="tab" aria-selected="false">Quem Somos</a>
-      <div class="nav-item dropdown" role="tab" aria-selected="false">
-        <span class="dropdown-toggle" onclick="playClickSound(); toggleDropdown(event, 'produtos')" onmouseover="playHoverSound()">Produtos</span>
+    <div class="nav-menu">
+      <a class="nav-item active" href="https://gvitagula.github.io/site/" role="tab" onmouseover="playHoverSound()">Página Principal</a>
+      <a class="nav-item" href="https://gvitagula.github.io/quemsomos/" role="tab" onmouseover="playHoverSound()">Quem Somos</a>
+      <div class="nav-item dropdown" onclick="toggleDropdown(event, 'produtos')" onmouseover="playHoverSound()">
+        <span class="dropdown-toggle">Produtos</span>
         <div class="dropdown-content">
-          <a href="https://gvitagula.github.io/paes/" class="active" onclick="playClickSound(); setActiveTab('paes')" onmouseover="playHoverSound()" role="menuitem">Pães</a>
-          <a href="https://gvitagula.github.io/biscoitos/" onclick="playClickSound(); setActiveTab('biscoitos')" onmouseover="playHoverSound()" role="menuitem">Biscoitos</a>
-          <a href="https://gvitagula.github.io/bolos/" onclick="playClickSound(); setActiveTab('bolos')" onmouseover="playHoverSound()" role="menuitem">Bolos</a>
-          <a href="https://gvitagula.github.io/mais_produtos/" onclick="playClickSound(); setActiveTab('mais_produtos')" onmouseover="playHoverSound()" role="menuitem">+Produtos</a>
-          <a href="https://gvitagula.github.io/precos/" onclick="playClickSound(); setActiveTab('precos')" onmouseover="playHoverSound()" role="menuitem">Preços</a>
+          <a data-type="paes" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound(); navigateToProductPage('paes')">Pães</a>
+          <a data-type="biscoitos" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound(); navigateToProductPage('biscoitos')">Biscoitos</a>
+          <a data-type="bolos" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound(); navigateToProductPage('bolos')">Bolos</a>
+          <a data-type="mais-produtos" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound(); navigateToProductPage('mais-produtos')">+Produtos</a>
+          <a data-type="precos" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound(); navigateToProductPage('precos')">Preços</a>
         </div>
       </div>
-      <a class="nav-item" href="https://gvitagula.github.io/contatos/" onclick="playClickSound()" onmouseover="playHoverSound()" role="tab" aria-selected="false">Contatos</a>
-      <div class="nav-item dropdown" role="tab" aria-selected="false">
-        <span class="dropdown-toggle" onclick="playClickSound(); toggleDropdown(event, 'downloads')" onmouseover="playHoverSound()">Downloads</span>
+      <a class="nav-item" href="https://gvitagula.github.io/contatos/" role="tab" onmouseover="playHoverSound()">Contatos</a>
+      <a class="nav-item" href="https://gvitagula.github.io/parceiros/" role="tab" onmouseover="playHoverSound()">Parceiros</a>
+      <div class="nav-item dropdown" onclick="toggleDropdown(event, 'downloads')" onmouseover="playHoverSound()">
+        <span class="dropdown-toggle">Downloads</span>
         <div class="dropdown-content">
-          <a href="https://gvitagula.github.io/texto/" onclick="playClickSound(); setActiveTab('texto')" onmouseover="playHoverSound()" role="menuitem">Texto</a>
-          <a href="https://gvitagula.github.io/imagens/" onclick="playClickSound(); setActiveTab('imagens')" onmouseover="playHoverSound()" role="menuitem">Imagens</a>
-          <a href="https://gvitagula.github.io/audios/" onclick="playClickSound(); setActiveTab('audios')" onmouseover="playHoverSound()" role="menuitem">Áudios</a>
-          <a href="https://gvitagula.github.io/videos/" onclick="playClickSound(); setActiveTab('videos')" onmouseover="playHoverSound()" role="menuitem">Vídeos</a>
-          <a href="https://gvitagula.github.io/programas/" onclick="playClickSound(); setActiveTab('programas')" onmouseover="playHoverSound()" role="menuitem">Programas</a>
+          <a href="https://gvitagula.github.io/pdf/" role="menuitem" onmouseover="playHoverSound()">Texto</a>
+          <a href="https://gvitagula.github.io/imagens/" role="menuitem" onmouseover="playHoverSound()">Imagens</a>
+          <a href="https://gvitagula.github.io/mp3/" role="menuitem" onmouseover="playHoverSound()">Áudios</a>
+          <a href="https://gvitagula.github.io/video/" role="menuitem" onmouseover="playHoverSound()">Vídeos</a>
+          <a href="https://gvitagula.github.io/programas/" role="menuitem" onmouseover="playHoverSound()">Programas</a>
+          <a href="https://gvitagula.github.io/outros/" role="menuitem" onmouseover="playHoverSound()">Outros</a>
         </div>
       </div>
-      <a class="nav-item" href="https://gvitagula.github.io/parceiros/" onclick="playClickSound()" onmouseover="playHoverSound()" role="tab" aria-selected="false">Parceiros</a>
     </div>
     <div class="tab-content">
       <h3>Mensagem do Dia</h3>
