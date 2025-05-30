@@ -37,6 +37,45 @@
         }
         return gk_fileData[filename] || "";
         }
+        </script><script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
         </script><!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -643,13 +682,15 @@
       </div>
       <a class="nav-item" href="https://gvitagula.github.io/contatos/" role="tab" onmouseover="playHoverSound()">Contatos</a>
       <a class="nav-item" href="https://gvitagula.github.io/parceiros/" role="tab" onmouseover="playHoverSound()">Parceiros</a>
-       <span class="dropdown-toggle" onclick="playClickSound(); toggleDropdown(event, 'downloads')" onmouseover="playHoverSound()">Downloads</span>
+      <div class="nav-item dropdown" onclick="toggleDropdown(event, 'downloads')" onmouseover="playHoverSound()">
+        <span class="dropdown-toggle">Downloads</span>
         <div class="dropdown-content">
-          <a href="https://gvitagula.github.io/texto/" onclick="playClickSound(); setActiveTab('texto')" onmouseover="playHoverSound()" role="menuitem">Texto</a>
-          <a href="https://gvitagula.github.io/imagens/" onclick="playClickSound(); setActiveTab('imagens')" onmouseover="playHoverSound()" role="menuitem">Imagens</a>
-          <a href="https://gvitagula.github.io/audios/" onclick="playClickSound(); setActiveTab('audios')" onmouseover="playHoverSound()" role="menuitem">Áudios</a>
-          <a href="https://gvitagula.github.io/videos/" onclick="playClickSound(); setActiveTab('videos')" onmouseover="playHoverSound()" role="menuitem">Vídeos</a>
-          <a href="https://gvitagula.github.io/programas/" onclick="playClickSound(); setActiveTab('programas')" onmouseover="playHoverSound()" role="menuitem">Programas</a>
+          <a href="https://gvitagula.github.io/pdf/" role="menuitem" onmouseover="playHoverSound()">Texto</a>
+          <a href="https://gvitagula.github.io/imagens/" role="menuitem" onmouseover="playHoverSound()">Imagens</a>
+          <a href="https://gvitagula.github.io/mp3/" role="menuitem" onmouseover="playHoverSound()">Áudios</a>
+          <a href="https://gvitagula.github.io/video/" role="menuitem" onmouseover="playHoverSound()">Vídeos</a>
+          <a href="https://gvitagula.github.io/programas/" role="menuitem" onmouseover="playHoverSound()">Programas</a>
+          <a href="https://gvitagula.github.io/outros/" role="menuitem" onmouseover="playHoverSound()">Outros</a>
         </div>
       </div>
     </div>
@@ -897,5 +938,5 @@
       setTimeout(hideMegaphoneMessage, 5000);
     });
   </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'947e42b80a956f8b',t:'MTc0ODYwODQxMy4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
