@@ -643,15 +643,13 @@
       </div>
       <a class="nav-item" href="https://gvitagula.github.io/contatos/" role="tab" onmouseover="playHoverSound()">Contatos</a>
       <a class="nav-item" href="https://gvitagula.github.io/parceiros/" role="tab" onmouseover="playHoverSound()">Parceiros</a>
-      <div class="nav-item dropdown" onclick="toggleDropdown(event, 'downloads')" onmouseover="playHoverSound()">
-        <span class="dropdown-toggle">Downloads</span>
+       <span class="dropdown-toggle" onclick="playClickSound(); toggleDropdown(event, 'downloads')" onmouseover="playHoverSound()">Downloads</span>
         <div class="dropdown-content">
-          <a href="https://gvitagula.github.io/pdf/" role="menuitem" onmouseover="playHoverSound()">Texto</a>
-          <a href="https://gvitagula.github.io/imagens/" role="menuitem" onmouseover="playHoverSound()">Imagens</a>
-          <a href="https://gvitagula.github.io/mp3/" role="menuitem" onmouseover="playHoverSound()">Áudios</a>
-          <a href="https://gvitagula.github.io/video/" role="menuitem" onmouseover="playHoverSound()">Vídeos</a>
-          <a href="https://gvitagula.github.io/programas/" role="menuitem" onmouseover="playHoverSound()">Programas</a>
-          <a href="https://gvitagula.github.io/outros/" role="menuitem" onmouseover="playHoverSound()">Outros</a>
+          <a href="https://gvitagula.github.io/texto/" onclick="playClickSound(); setActiveTab('texto')" onmouseover="playHoverSound()" role="menuitem">Texto</a>
+          <a href="https://gvitagula.github.io/imagens/" onclick="playClickSound(); setActiveTab('imagens')" onmouseover="playHoverSound()" role="menuitem">Imagens</a>
+          <a href="https://gvitagula.github.io/audios/" onclick="playClickSound(); setActiveTab('audios')" onmouseover="playHoverSound()" role="menuitem">Áudios</a>
+          <a href="https://gvitagula.github.io/videos/" onclick="playClickSound(); setActiveTab('videos')" onmouseover="playHoverSound()" role="menuitem">Vídeos</a>
+          <a href="https://gvitagula.github.io/programas/" onclick="playClickSound(); setActiveTab('programas')" onmouseover="playHoverSound()" role="menuitem">Programas</a>
         </div>
       </div>
     </div>
