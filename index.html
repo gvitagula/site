@@ -428,63 +428,62 @@
       }
       .header {
         height: 110px;
-        padding: 25px 50px;
-      }
-      .title-container {
-        padding-left: 12px;
-        max-width: 80%;
-      }
-      .header h1 {
-        font-size: 2.2em;
-      }
-      .header p {
-        font-size: 1.1em;
-      }
-      .header p:last-child {
-        font-size: 1em;
-      }
-      .audio-controls {
-        padding: 5px;
-        margin-right: 10px;
-      }
-      .control-buttons .control-btn {
-        font-size: 0.8em;
-        min-width: 28px;
-        min-height: 28px;
-      }
-      .control-buttons .play-pause-btn {
-        width: 20px;
-        height: 20px;
-        font-size: 0.8em;
-      }
-      .volume-icon {
-        width: 20px;
-        height: 20px;
-      }
-      .volume-icon svg {
-        width: 12px;
-        height: 12px;
-      }
-      .waveform {
-        width: 36px;
-        height: 8px;
-      }
-      .track-controls {
-        gap: 5px;
-      }
-      .nav-menu {
-        padding: 10px;
-        gap: 8px;
-        top: 110px;
-      }
-      .nav-item {
-        padding: 8px 12px;
-        font-size: 0.9em;
-      }
-      .visitor-counter {
-        max-width: 300px;
-        padding: 15px;
-      }
+        padding: 25px 50道具
+        .title-container {
+          padding-left: 12px;
+          max-width: 80%;
+        }
+        .header h1 {
+          font-size: 2.2em;
+        }
+        .header p {
+          font-size: 1.1em;
+        }
+        .header p:last-child {
+          font-size: 1em;
+        }
+        .audio-controls {
+          padding: 5px;
+          margin-right: 10px;
+        }
+        .control-buttons .control-btn {
+          font-size: 0.8em;
+          min-width: 28px;
+          min-height: 28px;
+        }
+        .control-buttons .play-pause-btn {
+          width: 20px;
+          height: 20px;
+          font-size: 0.8em;
+        }
+        .volume-icon {
+          width: 20px;
+          height: 20px;
+        }
+        .volume-icon svg {
+          width: 12px;
+          height: 12px;
+        }
+        .waveform {
+          width: 36px;
+          height: 8px;
+        }
+        .track-controls {
+          gap: 5px;
+        }
+        .nav-menu {
+          padding: 10px;
+          gap: 8px;
+          top: 110px;
+        }
+        .nav-item {
+          padding: 8px 12px;
+          font-size: 0.9em;
+        }
+        .visitor-counter {
+          max-width: 300px;
+          padding: 15px;
+        }
     }
     @media (max-width: 600px) {
       .container {
@@ -634,11 +633,11 @@
       <div class="nav-item dropdown" onclick="toggleDropdown(event, 'produtos')" onmouseover="playHoverSound()">
         <span class="dropdown-toggle">Produtos</span>
         <div class="dropdown-content">
-          <a href="https://gvitagula.github.io/paes/" role="menuitem" onmouseover="playHoverSound()">Pães</a>
-          <a href="https://gvitagula.github.io/biscoitos/" role="menuitem" onmouseover="playHoverSound()">Biscoitos</a>
-          <a href="https://gvitagula.github.io/bolos/" role="menuitem" onmouseover="playHoverSound()">Bolos</a>
-          <a href="https://gvitagula.github.io/+produtos/" role="menuitem" onmouseover="playHoverSound()">+Produtos</a>
-          <a href="https://gvitagula.github.io/precos/" role="menuitem" onmouseover="playHoverSound()">Preços</a>
+          <a href="https://gvitagula.github.io/paes/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Pães</a>
+          <a href="https://gvitagula.github.io/biscoitos/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Biscoitos</a>
+          <a href="https://gvitagula.github.io/bolos/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Bolos</a>
+          <a href="https://gvitagula.github.io/+produtos/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">+Produtos</a>
+          <a href="https://gvitagula.github.io/precos/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Preços</a>
         </div>
       </div>
       <a class="nav-item" href="https://gvitagula.github.io/contatos/" role="tab" onmouseover="playHoverSound()">Contatos</a>
@@ -646,12 +645,12 @@
       <div class="nav-item dropdown" onclick="toggleDropdown(event, 'downloads')" onmouseover="playHoverSound()">
         <span class="dropdown-toggle">Downloads</span>
         <div class="dropdown-content">
-          <a href="https://gvitagula.github.io/pdf/" role="menuitem" onmouseover="playHoverSound()">Texto</a>
-          <a href="https://gvitagula.github.io/imagens/" role="menuitem" onmouseover="playHoverSound()">Imagens</a>
-          <a href="https://gvitagula.github.io/mp3/" role="menuitem" onmouseover="playHoverSound()">Áudios</a>
-          <a href="https://gvitagula.github.io/video/" role="menuitem" onmouseover="playHoverSound()">Vídeos</a>
-          <a href="https://gvitagula.github.io/programas/" role="menuitem" onmouseover="playHoverSound()">Programas</a>
-          <a href="https://gvitagula.github.io/outros/" role="menuitem" onmouseover="playHoverSound()">Outros</a>
+          <a href="https://gvitagula.github.io/pdf/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Texto</a>
+          <a href="https://gvitagula.github.io/imagens/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Imagens</a>
+          <a href="https://gvitagula.github.io/mp3/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Áudios</a>
+          <a href="https://gvitagula.github.io/video/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Vídeos</a>
+          <a href="https://gvitagula.github.io/programas/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Programas</a>
+          <a href="https://gvitagula.github.io/outros/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Outros</a>
         </div>
       </div>
     </div>
@@ -753,22 +752,6 @@
       if (!clickSound.paused) clickSound.pause();
       clickSound.currentTime = 0;
       clickSound.play().catch(error => console.error("Click sound playback failed:", error));
-    }
-
-    function navigateToProductPage(type) {
-      const productPages = {
-        'paes': 'https://gvitagula.github.io/paes/',
-        'biscoitos': 'https://gvitagula.github.io/biscoitos/',
-        'bolos': 'https://gvitagula.github.io/bolos/',
-        'mais-produtos': 'https://gvitagula.github.io/+produtos/',
-        'precos': 'https://gvitagula.github.io/precos/'
-      };
-      const url = productPages[type];
-      if (url) {
-        window.location.href = url;
-      } else {
-        console.error("Página não encontrada para o tipo:", type);
-      }
     }
 
     function changeVolume() {
@@ -888,13 +871,14 @@
     audio.load();
 
     function toggleDropdown(event, tabName) {
-      event.preventDefault();
       event.stopPropagation();
       const dropdown = event.currentTarget;
       const isOpen = dropdown.classList.contains('open');
       document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('open'));
-      if (!isOpen) dropdown.classList.add('open');
-      playClickSound();
+      if (!isOpen && !event.target.closest('.dropdown-content')) {
+        dropdown.classList.add('open');
+        playClickSound();
+      }
     }
 
     document.addEventListener('click', (event) => {
