@@ -59,6 +59,7 @@
     }
     .container {
       width: 100%;
+      max-width: 1200px;
       background-color: #2c2c2c;
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
       border-radius: 15px;
@@ -78,6 +79,7 @@
       position: fixed;
       top: 0;
       width: 100%;
+      max-width: 1200px;
       box-sizing: border-box;
       display: flex;
       justify-content: space-between;
@@ -220,20 +222,21 @@
     }
     .nav-menu {
       background-color: #3a3a3a;
-      padding: 6px;
+      padding: 10px;
       display: flex;
       justify-content: center;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
       position: fixed;
       top: 100px;
       width: 100%;
+      max-width: 1200px;
       z-index: 1000;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
       box-sizing: border-box;
     }
     .nav-item {
-      padding: 6px 10px;
+      padding: 8px 12px;
       background-color: #ff6f61;
       color: #ffffff;
       border-radius: 5px;
@@ -302,7 +305,7 @@
       color: #ffffff;
     }
     .tab-content {
-      padding: 15px;
+      padding: 20px;
       background-color: #3a3a3a;
       border-radius: 10px;
       margin: 10px;
@@ -314,7 +317,7 @@
     .tab-content h3 {
       color: #ff6f61;
       font-size: 1.2em;
-      margin: 15px 0 10px;
+      margin: 20px 0 10px;
       text-align: center;
     }
     .message-box {
@@ -342,7 +345,7 @@
     .next-btn {
       display: block;
       margin: 8px auto;
-      padding: 4px 12px;
+      padding: 8px 16px;
       background-color: #ff6f61;
       color: #ffffff;
       border: none;
@@ -372,18 +375,18 @@
     }
     .visitor-counter {
       text-align: center;
-      padding: 12px;
+      padding: 15px;
       background-color: #252525;
       border: 1px solid #00ffcc;
       border-radius: 8px;
-      margin: 15px auto;
-      max-width: 250px;
+      margin: 20px auto;
+      max-width: 300px;
       font-family: 'Orbitron', sans-serif;
       color: #00cc99;
       box-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
     }
     .visitor-counter span {
-      font-size: 1.1em;
+      font-size: 1.2em;
       animation: pulse 2s infinite;
     }
     @keyframes pulse {
@@ -399,18 +402,19 @@
       transform: translate(-50%, -50%);
       background-color: #ff6f61;
       color: #ffffff;
-      padding: 15px;
+      padding: 20px;
       border-radius: 10px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
       z-index: 10000;
       text-align: center;
-      font-size: 1em;
+      font-size: 1.2em;
+      animation: fadeIn 0.5s ease-in-out;
       width: 90%;
       max-width: 300px;
     }
     .megaphone-message button {
       margin-top: 10px;
-      padding: 8px 16px;
+      padding: 5px 10px;
       background-color: #ffffff;
       color: #ff6f61;
       border: none;
@@ -421,78 +425,34 @@
       min-height: 44px;
       touch-action: manipulation;
     }
-    @media (min-width: 768px) {
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @media (max-width: 1024px) {
       .container {
-        max-width: 1600px;
-        padding-top: 160px;
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
       }
       .header {
-        height: 110px;
-        padding: 25px 50道具
-        .title-container {
-          padding-left: 12px;
-          max-width: 80%;
-        }
-        .header h1 {
-          font-size: 2.2em;
-        }
-        .header p {
-          font-size: 1.1em;
-        }
-        .header p:last-child {
-          font-size: 1em;
-        }
-        .audio-controls {
-          padding: 5px;
-          margin-right: 10px;
-        }
-        .control-buttons .control-btn {
-          font-size: 0.8em;
-          min-width: 28px;
-          min-height: 28px;
-        }
-        .control-buttons .play-pause-btn {
-          width: 20px;
-          height: 20px;
-          font-size: 0.8em;
-        }
-        .volume-icon {
-          width: 20px;
-          height: 20px;
-        }
-        .volume-icon svg {
-          width: 12px;
-          height: 12px;
-        }
-        .waveform {
-          width: 36px;
-          height: 8px;
-        }
-        .track-controls {
-          gap: 5px;
-        }
-        .nav-menu {
-          padding: 10px;
-          gap: 8px;
-          top: 110px;
-        }
-        .nav-item {
-          padding: 8px 12px;
-          font-size: 0.9em;
-        }
-        .visitor-counter {
-          max-width: 300px;
-          padding: 15px;
-        }
+        max-width: 100%;
+      }
+      .nav-menu {
+        max-width: 100%;
+      }
     }
-    @media (max-width: 600px) {
+    @media (max-width: 768px) {
       .container {
+        width: 100%;
+        margin: 0;
         border-radius: 0;
         padding-top: 140px;
       }
       .header {
         height: 90px;
         padding: 15px 25px;
+        max-width: 100%;
       }
       .title-container {
         padding-left: 8px;
@@ -537,14 +497,19 @@
         gap: 3px;
       }
       .nav-menu {
-        padding: 5px;
-        gap: 4px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 8px;
+        gap: 6px;
         top: 90px;
+        max-width: 100%;
       }
       .nav-item {
-        padding: 4px 8px;
+        padding: 6px 10px;
         font-size: 0.8em;
-        min-width: 40px;
+        flex: 1 1 auto;
+        text-align: center;
       }
       .dropdown-content {
         width: 100%;
@@ -556,8 +521,8 @@
         border-radius: 0 0 5px 5px;
       }
       .dropdown-content a {
-        font-size: 0.7em;
-        padding: 6px 10px;
+        font-size: 0.8em;
+        padding: 8px 12px;
         text-align: center;
       }
       .tab-content {
@@ -581,6 +546,23 @@
         max-width: 180px;
         padding: 8px;
         font-size: 0.8em;
+      }
+    }
+    @media (max-width: 480px) {
+      .container {
+        width: 100%;
+        margin: 0;
+        border-radius: 0;
+        padding-top: 140px;
+      }
+      .header {
+        height: 90px;
+        padding: 15px 25px;
+        max-width: 100%;
+      }
+      .nav-menu {
+        top: 90px;
+        max-width: 100%;
       }
     }
   </style>
@@ -627,37 +609,34 @@
         </div>
       </div>
     </header>
-<div class="nav-menu">
-  <a class="nav-item active" href="https://gvitagula.github.io/site/" role="tab" onmouseover="playHoverSound()">Página Principal</a>
-  <a class="nav-item" href="https://gvitagula.github.io/quemsomos/" role="tab" onmouseover="playHoverSound()">Quem Somos</a>
-
-  <div class="nav-item dropdown" onclick="toggleDropdown(event, 'produtos')" onmouseover="playHoverSound()">
-    <span class="dropdown-toggle">Produtos</span>
-    <div class="dropdown-content">
-      <a href="https://gvitagula.github.io/paes/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Pães</a>
-      <a href="https://gvitagula.github.io/biscoitos/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Biscoitos</a>
-      <a href="https://gvitagula.github.io/bolos/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Bolos</a>
-      <a href="https://gvitagula.github.io/+produtos/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">+Produtos</a>
-      <a href="https://gvitagula.github.io/precos/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Preços</a>
+    <div class="nav-menu">
+      <a class="nav-item active" href="https://gvitagula.github.io/site/" role="tab" onmouseover="playHoverSound()">Página Principal</a>
+      <a class="nav-item" href="https://gvitagula.github.io/quemsomos/" role="tab" onmouseover="playHoverSound()">Quem Somos</a>
+      <div class="nav-item dropdown" onclick="toggleDropdown(event, 'produtos')" onmouseover="playHoverSound()">
+        <span class="dropdown-toggle">Produtos</span>
+        <div class="dropdown-content">
+          <a href="https://gvitagula.github.io/paes/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Pães</a>
+          <a href="https://gvitagula.github.io/biscoitos/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Biscoitos</a>
+          <a href="https://gvitagula.github.io/bolos/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Bolos</a>
+          <a href="https://gvitagula.github.io/+produtos/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">+Produtos</a>
+          <a href="https://gvitagula.github.io/precos/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Preços</a>
+        </div>
+      </div>
+      <a class="nav-item" href="https://gvitagula.github.io/contatos/" role="tab" onmouseover="playHoverSound()">Contatos</a>
+      <a class="nav-item" href="https://gvitagula.github.io/parceiros/" role="tab" onmouseover="playHoverSound()">Parceiros</a>
+      <div class="nav-item dropdown" onclick="toggleDropdown(event, 'downloads')" onmouseover="playHoverSound()">
+        <span class="dropdown-toggle">Downloads</span>
+        <div class="dropdown-content">
+          <a href="https://gvitagula.github.io/pdf/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Texto</a>
+          <a href="https://gvitagula.github.io/imagens/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Imagens</a>
+          <a href="https://gvitagula.github.io/audios/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Áudios</a>
+          <a href="https://gvitagula.github.io/Videos/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Vídeos</a>
+          <a href="https://gvitagula.github.io/programas/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Programas</a>
+          <a href="https://gvitagula.github.io/outros/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Outros</a>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <a class="nav-item" href="https://gvitagula.github.io/contatos/" role="tab" onmouseover="playHoverSound()">Contatos</a>
-  <a class="nav-item" href="https://gvitagula.github.io/parceiros/" role="tab" onmouseover="playHoverSound()">Parceiros</a>
-
-  <div class="nav-item dropdown" onclick="toggleDropdown(event, 'downloads')" onmouseover="playHoverSound()">
-    <span class="dropdown-toggle">Downloads</span>
-    <div class="dropdown-content">
-      <a href="https://gvitagula.github.io/pdf/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Texto</a>
-      <a href="https://gvitagula.github.io/imagens/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Imagens</a>
-      <a href="https://gvitagula.github.io/audios/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Áudios</a>
-      <a href="https://gvitagula.github.io/Videos/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Vídeos</a>
-      <a href="https://gvitagula.github.io/programas/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Programas</a>
-      <a href="https://gvitagula.github.io/outros/" role="menuitem" onmouseover="playHoverSound()" onclick="playClickSound()">Outros</a>
-    </div>
-  </div>
-</div>
-<div class="tab-content">
+    <div class="tab-content">
       <h3>Mensagem do Dia</h3>
       <div class="message-box">
         <p>O coração puro é o que ama a Deus acima de tudo.</p>
@@ -671,25 +650,22 @@
       <div class="visitor-counter">Visitas: <span id="visit-count">141</span></div>
     </div>
   </div>
-
   <audio id="background-audio" preload="auto">
     <source id="audio-source" src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica1.mp3" type="audio/mpeg">
     Seu navegador não suporta o elemento de áudio.
   </audio>
-  <audio id="hover-sound">
+  <audio id="hover-sound" preload="auto">
     <source src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/botao1.mp3" type="audio/mpeg">
     Seu navegador não suporta o elemento de áudio.
   </audio>
-  <audio id="click-sound">
+  <audio id="click-sound" preload="auto">
     <source src="https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/botao2.mp3" type="audio/mpeg">
     Seu navegador não suporta o elemento de áudio.
   </audio>
-
   <div id="megaphone-message" class="megaphone-message">
     🎉 Temos boas ofertas para você! 🎉
     <button onclick="hideMegaphoneMessage()">Fechar</button>
   </div>
-
   <script>
     var gk_isXlsx = false;
     var gk_xlsxFileLookup = {};
@@ -721,7 +697,6 @@
       }
       return gk_fileData[filename] || "";
     }
-
     let volumeLevel = 0;
     const audio = document.getElementById('background-audio');
     const audioSource = document.getElementById('audio-source');
@@ -731,12 +706,25 @@
     const clickSound = document.getElementById('click-sound');
     let isPlaying = false;
     let hasClicked = false;
+    let isHoverSoundReady = false;
+    let lastHoverTime = 0;
+    const hoverDebounceTime = 200; // Debounce time in milliseconds
     const tracks = [
       "https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica1.mp3",
       "https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica2.mp3",
       "https://raw.githubusercontent.com/gvitagula/site/refs/heads/main/aud/musica3.mp3"
     ];
     let currentTrackIndex = 0;
+
+    // Preload hover sound and check readiness
+    hoverSound.addEventListener('canplaythrough', () => {
+      isHoverSoundReady = true;
+    });
+    hoverSound.addEventListener('error', () => {
+      console.warn("Hover sound failed to load. Using fallback silence.");
+      isHoverSoundReady = false;
+    });
+    hoverSound.load();
 
     function handleFirstClick() {
       if (!hasClicked) {
@@ -746,15 +734,27 @@
     }
 
     function playHoverSound() {
-      if (!hoverSound.paused) hoverSound.pause();
-      hoverSound.currentTime = 0;
-      hoverSound.play().catch(error => console.error("Hover sound playback failed:", error));
+      // Only play if user has interacted and audio is ready
+      if (!hasClicked || !isHoverSoundReady) return;
+
+      const currentTime = Date.now();
+      if (currentTime - lastHoverTime < hoverDebounceTime) return; // Debounce rapid calls
+      lastHoverTime = currentTime;
+
+      if (!hoverSound.paused) {
+        hoverSound.pause();
+        hoverSound.currentTime = 0;
+      }
+      hoverSound.play().catch(error => {
+        // Suppress error to avoid console spam, but log for debugging
+        console.debug("Hover sound playback failed:", error.message);
+      });
     }
 
     function playClickSound() {
       if (!clickSound.paused) clickSound.pause();
       clickSound.currentTime = 0;
-      clickSound.play().catch(error => console.error("Click sound playback failed:", error));
+      clickSound.play().catch(error => console.debug("Click sound playback failed:", error.message));
     }
 
     function changeVolume() {
